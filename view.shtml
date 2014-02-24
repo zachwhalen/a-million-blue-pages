@@ -64,6 +64,7 @@
 
 
 			// add extra labels to row.
+
 			$(".pg").each( function () { 
 				var pg = $(this).attr('id').substring(1);
 				if (extraLabels[pg]){

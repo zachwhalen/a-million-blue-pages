@@ -343,6 +343,7 @@ span.counter {
     position: absolute;
     left: 10px;
     top:9px;
+    display: none;
 }
 
 #single-page-nav-bar {

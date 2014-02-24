@@ -1,0 +1,113 @@
+<html>
+<head>
+	<link rel="icon" type="image/ico" href="favicon.ico"/>
+	<title>An Engine for cranking out the HTML that will be reused in rows.html</title>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800,700|Goudy+Bookletter+1911' rel='stylesheet' type='text/css'>
+		<script src="scripts/jquery.cookie.js"></script>
+		<script src="scripts/jquery.sheetrock.js"></script>
+		<script src="scripts/handlebars-v1.1.2.js"></script>
+		<script src="scripts/mbp.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+	<script type="text/javascript">
+
+		$(document).ready( function () { 
+			for (var b = 0; b <= 742; b++){
+
+				$("#pg-content").append("<div class='pg' id='p" + String(thePages[b].name).toUpperCase() + "'><div class='extraLabel'>"+thePages[b].section + "</div><div class='pg-label'>" + thePages[b].name + "</div> </div>\n");
+	 		}
+		});
+
+	</script>
+	
+</head>
+<body>
+<div class="view">
+
+	<!--#include virtual="inc/header.html"-->
+	<div id="hol">
+		<div id="pg-filters" >
+
+			<div id="view-filters" class="pg">
+				<div class="pg-label">options</div>
+				<div class="filter-control">
+					<label class="empty-label" for="hide-empty">
+						<input type="checkbox" name="hide-empty" id="hide-empty" class="filter" />
+						Hide empty pages
+					</label>
+					
+					<label class="filter-label" for="hide-filter">
+						<input type="checkbox" name="hide-filter" id="hide-filter" class="filter" />
+						Use Filters
+					</label>
+
+					
+						<label for="thumb-small">
+						<input type="radio" name="thumbsize" id="thumb-small" value="small" />Small</label>
+						<label for="thumb-larger">
+						<input type="radio" name="thumbsize" id="thumb-larger" value="larger" />Larger</label>
+				
+					
+				</div>
+			</div>
+			<div id="pg-head" class="pg">
+			
+				<div><p>Use the filters below to show and hide content by source, type, or tag. Filters combine with <strong>OR</strong> logic.</p></div>
+			
+			
+				<div id="source-filters" class="pg">
+					<div class="pg-label">sources</div>
+				</div>
+				
+				<div id="type-filters" class="pg">
+					<div class="pg-label">types</div>
+				</div>
+				
+				<div id="tag-filters" class="pg">
+					<div class="pg-label"><span title="Restrict by tags">tags</span></div>
+						
+				</div>
+				<div style="position:relative; margin-left:110px;">
+					<div class="pg-label">&nbsp;</div>
+					<div class="button">
+						<a id="reset" href="?empty=hide&tag=all&type=all&source=all&filters=show&ts=small " title="Reset filters to default values">Reset</a>
+					</div>
+					<div class="button">
+						<a href="" id="permalink" title="Link to current set of filters">Link</a>
+					</div>
+				</div>
+				<br style="clear: both" />
+ 			</div>
+		</div>
+		
+		<div id="pg-content"> 
+			
+		</div>
+
+	</div>
+</div>
+
+<!--#include virtual="inc/footer.html" -->
+
+
+<div id="nu">
+</div>
+
+<script id="node-template" type="text/x-handlebars-template">
+
+	<div class="pg-node {{type}} {{source}} {{tags}}">
+		<a href="{{link}}" target="_blank">
+			<div id="legend"></div>
+			{{#if imgthumb}}
+				<img src="{{thumbnail}}" />
+			{{else}}
+				<div class="no-image">{{thumb}}</div>
+			{{/if}}
+			
+		</a>
+	</div>
+</script>
+</body>
+</html>
+

@@ -128,7 +128,7 @@
 		// parse data by appending its thumbnail into the appropriate page DIV
 		function pageRows(data) {
 
-			console.log(data);
+			//console.log(data);
 
 			var pg = data.cells.page;
 			//var node = makeNode(data.cells);
