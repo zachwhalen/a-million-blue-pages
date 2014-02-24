@@ -1,0 +1,73 @@
+<html>
+<head>
+	<link rel="icon" type="image/ico" href="favicon.ico"/>
+	<title>A Million Blue Pages</title>
+<!--#include virtual="inc/head.html"-->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#faqs h3').each(function() {
+				var tis = $(this), state = false, answer = tis.next('div').hide().css('height','auto').slideUp();
+				tis.click(function() {
+					state = !state;
+					answer.slideToggle(state);
+					tis.toggleClass('active',state);
+				});
+			});
+		});
+	</script>
+	
+</head>
+
+<body>
+<div class="wrapper ">
+	<!--#include virtual="inc/header.html"-->
+ <div id="content">
+	<h1>Some questions and some answers</h1>
+
+	<div id="faqs">
+
+		<h3>How do I add content?</h3>
+		<div>
+			<p>There's a <a href="contribute.shtml">whole page</a> dedicated to that question, but it should be pretty easy: make something that relates to a specific page of <cite><span class="house">House</span> of Leaves</cite> and that is of a form that can be shared on Instagram, Tumblr, Vine or Twitter. Post it in the appropriate place and tag it "hol14" and "p123" (replace 123 with the page you're making something for). That usually works!</p>
+		</div>
+		
+		<h3>What do I do if something I uploaded and tagged doesn't show up here?</h3>
+		<div>
+			<p>If tagged appropriately, items should appear here within 30 minutes or so. If you still don't see it, try clearing your browser's cache and refreshing. If that still doesn't make it appear, bear in mind that this site is a work in progress, and contact <a href="zach.whalen+hol14@gmail.com">Zach Whalen</a>.</p>
+		</div>
+
+		<h3>Who is allowed to add content?</h3>
+		<div>
+			<p>This site is being developed to support a collaborative teaching of <cite><span class="house">House</span> of Leaves</cite> during the Spring 2014 semester. Students in those classes should be participating in ways directed by their respective assignments, but anyone in the world is welcome to <a href="contribute.shtml">contribute</a>.</p>
+		</div>
+
+		<h3>Is the content aggregated at MBP archived?</h3>
+		<div>
+			<p>No. The visualization or table view is meant as a map of the current state of the #hol14 network. Links from here point outward, and content remains hosted at its respective origin site. When the content disappears from, say, Tumblr, it will disappear from MBP after a day or two.</p>
+		</div>
+
+		<h3>How do I remove my content from A Million Blue Pages?</h3>
+		<div>
+			<p>MBP checks for broken links periodically and removes them. If you delete your Tumblr post, for example, it will eventually disappear from our visualization. If you need it removed sooner, contact <a href="mailto:zach.whalen+hol14@gmail.com">Zach Whalen</a>.</p>
+		</div>
+
+		<h3>How does this website work?</h3>
+		<div>
+			<p>AMillionBluePages.net is a website and platform that uses APIs to scan Instagram, Tumblr, Vine and Twitter for content that has been <a href="contribute.shtml">tagged appropriately</a>. Upon finding that content, MBP adds a reference to that content in its database -- currently a Google Spreadsheet. The site that you're browsing uses the jQuery library, <a href="https://github.com/chriszarate/sheetrock">Sheetrock</a> to query that spreadsheet and populate a <a href="view.shtml">view</a> of that data.</p>
+		</div>
+
+		<h3>Given how open this is, aren't you worried about spam?</h3>
+		<div>
+			<p>No. Not really.</p>
+		</div>
+	</div>
+	</div>
+</div>
+
+<!--#include virtual="inc/footer.html" -->
+
+
+
+
+</body>
+</html>

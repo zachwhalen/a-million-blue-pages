@@ -1,0 +1,40 @@
+<html>
+<head>
+	<link rel="icon" type="image/ico" href="favicon.ico"/>
+	<title>A Million Blue Pages</title>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800,700|Goudy+Bookletter+1911' rel='stylesheet' type='text/css'>
+		
+		<script src="scripts/jquery.cookie.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="style.css" />
+	
+	
+</head>
+<body>
+<div class="wrapper home">
+	<h1>A Million Blue Pages</h1>
+	<p class="subtitle">A Collaboration in Visualizing the Networks of <cite><span class="house">House</span> of Leaves</cite></p>
+
+<nav>
+		<ul>
+			
+			<li><a href="/view.shtml">View</a></li>
+			<li><a href="/about.shtml">About</a></li>
+			<li><a href="/contribute.shtml">Contribute</a></li>
+			<li><a href="/teach.shtml">Teach</a></li>
+			<li><a href="/faq.shtml">FAQ</a></li>
+		</ul>
+	</nav>
+
+	
+</div>
+
+<!--#include virtual="inc/footer.html" -->
+
+
+
+
+</body>
+</html>
+

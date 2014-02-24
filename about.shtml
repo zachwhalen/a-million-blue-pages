@@ -1,0 +1,27 @@
+<html>
+<head>
+	<link rel="icon" type="image/ico" href="favicon.ico"/>
+	<title>A Million Blue Pages - About</title>
+	<!--#include virtual="inc/head.html"-->
+	
+	
+</head>
+
+<body>
+<div class="wrapper ">
+	<!--#include virtual="inc/header.html"-->
+	
+<div id="content">
+<h1>About this Website</h1>
+<p><cite>A Million Blue Pages.net</cite> is a platform conceived and designed to support a collaborative teaching project around the book, <cite><span class="house">House</span> of Leaves</cite>. Taking inspiration from Zak Smith's illustrations for each page of <cite><a href="http://www.themodernword.com/pynchon/zak_smith/title.htm">Gravity's Rainbow</a></cite>, and bearing in mind the <a href="http://www.samplereality.com/2011/08/18/renetworking-the-novel/">distinctively networked textuality</a> of <cite><span class="house">House</span> of Leaves</cite>, this website invites users to <a href="contribute.shtml">contribute</a> images, video, audio, text -- anything that can be shared on the web -- to add to our growing <a href="view.shtml">collection of nodes</a>. </p>
+
+
+</div>
+</div>
+<!--#include virtual="inc/footer.html" -->
+
+
+
+
+</body>
+</html>

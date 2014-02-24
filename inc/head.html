@@ -1,0 +1,17 @@
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800,700|Goudy+Bookletter+1911' rel='stylesheet' type='text/css'>
+<link rel="icon" type="image/ico" href="favicon.ico"/>
+<script src="scripts/jquery.cookie.js"></script>
+<script src="scripts/jquery.sheetrock.js"></script>
+<script src="scripts/mbp.js"></script>
+		
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<script type="text/javascript">
+
+	curr = window.location.pathname.split('/').pop().split('.');
+
+	$(document).ready(function() {
+		$('nav li a[href="/'+curr[0]+'\.shtml"]').addClass("current");
+	});
+</script>

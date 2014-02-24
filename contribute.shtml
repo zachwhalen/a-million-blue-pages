@@ -1,0 +1,42 @@
+<html>
+<head>
+	<link rel="icon" type="image/ico" href="favicon.ico"/>
+	<title>A Million Blue Pages - Contribute</title>
+	<!--#include virtual="inc/head.html"-->
+	
+	
+</head>
+
+<body>
+<div class="wrapper ">
+	<!--#include virtual="inc/header.html"-->
+	<div id="content">
+<h1>How to Contribute</h1>
+<p>Post something on Tumblr, Instagram, Twitter, or Vine and include in that post two tags (or hashtags): "#hol14" and "#p123", where "123" is the page number of House of Leaves you wish to associate your content with. Your link should appear on the <a href="view.shtml">view</a> in about 30 minutes.</p>
+
+<h2>Step 1: Make a thing</h2>
+
+<p>This might be a photo, a video, a poem -- just about anything, so long as it can be shared via one of the networks this website scrapes for content. If you're participating in this <a href="/teach.shtml">for a class</a>, make sure you know what your assignment's expectations are.</p>
+
+<h2>Step 2: Upload it somewhere</h2>
+
+<p>More specifically, upload it on Vine, Tumblr, Twitter or Instagram. Other networks can also be involved as long as you have one representation in the targetted networks. For example, if you post something on YouTube, we can't scrape it directly, but you <em>can</em> post your video there and then create a Tumblr post linking to it.</p>
+
+<h2>Step 3: Tag it appropriately</h2>
+	
+<p>First, include the tag (or hashtag) "hol14" (without quote marks). Then, add a tag for the page your content is to be associated with. For example, if you illustrate something from page 56, include the tag "p56". For roman-numeraled pages, follow the same convention (e.g. "pxvii"). Pages without numbers use these names as tags: 'Cover', 'Cover-Flap','Inside-cover', 'Collage-Recto', 'Collage-Verso','Inside-Back','Back-Cover'.</p>
+
+<p>Make sure you follow the tagging conventions of the platform your working on, and feel free to add other tags like a class identifier.</p>
+
+<h2>Step 4: Check back here</h2>
+
+<p>If all goes well, you should soon find a thumbnail to your post on our <a href="/view.shtml">big table view</a>. If it still hasn't appeared after a couple hours, review these instructions to make sure you haven't missed something. Otherwise, <a href="mailto:zach.whalen+hol14@gmail.com">contact us</a>. 
+</div>
+</div>
+<!--#include virtual="inc/footer.html" -->
+
+
+
+
+</body>
+</html>

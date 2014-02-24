@@ -1,0 +1,505 @@
+<html>
+<head>
+	<link rel="icon" type="image/ico" href="favicon.ico"/>
+	<title>A Million Blue Pages</title>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800,700|Goudy+Bookletter+1911' rel='stylesheet' type='text/css'>
+		<script src="scripts/jquery.cookie.js"></script>
+		<script src="scripts/jquery.sheetrock.js"></script>
+		<script src="scripts/handlebars-v1.1.2.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+	<script type="text/javascript">
+
+
+		$("#reset").click( function (){
+
+			window.history.pushState('page', 'A Million Blue Pages', '?empty=hide&tag=all&type=all&source=all&filters=show');
+		});
+
+		numbers = {
+			'tag' : new Object(),
+			'source' : new Object(),
+			'type' : new Object()
+		};
+
+		filter = '';
+		
+		filterBlob = new Object();
+			
+		filterBlob = {
+			'empty' : 'hide', // or show
+			'tag' : 'all', // separate with +
+			'type' : 'all',
+			'source' : 'all',
+			'filters' : 'hide'
+		};
+		
+		clicked = false;
+		
+		$(document).ready(function (){ 
+
+
+
+
+			curr = window.location.pathname.split('/').pop().split('.');
+
+	
+			$('nav li a[href="/'+curr[0]+'\.shtml"]').addClass("current");
+	
+
+
+			source = $("#node-template").html();
+			template = Handlebars.compile(source);
+			alltags = new Array();
+			allsources = new Array();
+			alltypes = new Array();
+			
+
+			
+
+
+			// Construct the page numbers and rows:
+			for (var x = 1; x <= 26; x++){
+				var num = romanize(x);
+				$("#pg-content").append("<div class='pg hasNot' id='p" + num + "'><div class='pg-label'>" + num + "</div> </div>");
+
+			}
+
+			for (var i = 1; i <= 711; i++){
+
+				// Create the page rows
+				// I should hard code these eventually, for savings
+				$("#pg-content").append("<div class='pg hasNot' id='p" + i + "'><div class='pg-label'>" + i + "</div> </div>");
+
+			}
+
+			// Go get the data from SS
+			$('#nu').sheetrock({
+	  			url: 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dEhQVENrb1I2SllPa19ZSjVtMWtNVEE&usp=drive_web#gid=0',
+	  			sql: 'select * where P != "skip"', // don't need L, actually
+	  			headersOff: true,
+				rowHandler: pageRows,
+				userCallback : keepDoingStuff		
+			});
+
+			function keepDoingStuff(){
+	
+
+				// add tag filter checkboxes
+				for (var t = 0; t < alltags.length; t++){
+					$("#tag-filters").append('<label class="filter-tag tag" for="filter-tag-' + alltags[t] + '"><input type="checkbox" name="filter-tag-' + alltags[t] + '" id="filter-tag-' + alltags[t] + '" class="filter" />#' + alltags[t] + '	<span class="counter">[' + numbers.tag[alltags[t]] + ']</span></label>');
+				}
+
+				// add source filter checkboxes
+				for (var s = 0; s < allsources.length; s++){
+					$("#source-filters").append('<label class="filter-source source" for="filter-source-' + allsources[s] + '"><input type="checkbox" name="filter-source-' + allsources[s] + '" id="filter-source-' + allsources[s] + '" class="filter" /> ' + allsources[s] + ' <span class="counter">[' + numbers.source[allsources[s]] + ']</span></label>');
+				}
+				
+				
+				// add type filter checkboxes
+				for (var y = 0; y < alltypes.length; y++){
+					$("#type-filters").append('<label class="filter-type type" for="filter-type-' + alltypes[y] + '"><input type="checkbox" name="filter-type-' + alltypes[y] + '" id="filter-type-' + alltypes[y] + '" class="filter" /> ' + alltypes[y] +  '	<span class="counter">[' + numbers.type[alltypes[y]] + ']</span>	</label>');
+				}
+
+				// now the everything is in place, load the filterBus
+				
+				filterBus();
+				
+				$('.pg label').change( function(){ // use change() because click() effectively runs twice
+					clicked = true;
+					filterBus();	
+					
+				});
+		
+			
+			}
+
+
+
+
+
+		});
+
+		
+		function filterBus() {
+			// a generalized filtering function
+			// could take an argument from URL, otherwise, runs on each click.
+			// Therefore, each click should also update URL with its parameters.
+			
+		
+			var defaultBlob  = filterBlob; // redundant probably
+		
+			var activeBlob = new Object();
+			
+			
+			// parse filter state from URL
+			var urlBlob = {
+				'empty' : getURLParameter('empty'),
+				'tag' : getURLParameter('tag'),
+				'type' : getURLParameter('type'),
+				'source' : getURLParameter('source'),
+				'filters' : getURLParameter('filters')
+			}
+			
+			
+			// parse filter state from checkboxes
+			var boxBlob = {
+				'empty' : ($("#hide-empty").prop("checked") ? 'hide' : 'show' ),
+				'tag' : checked('tag'),
+				'type' : checked('type'),
+				'source' : checked('source'),
+				'filters' : ($("#hide-filter").prop("checked") ? 'show' : 'hide' )
+			};
+			
+			//if (any url parameters are null)
+			if (urlBlob.empty == "null" | urlBlob.tag == "null" | urlBlob.type == "null" | urlBlob.source == "null" | urlBlob.filters == "null"){
+			
+				//load the default filter state, 
+				
+				activeBlob = defaultBlob;
+				
+	
+			}else{
+				if (clicked){
+					//load the boxBlob, push to URL for convenience
+					activeBlob = boxBlob;
+				}else{
+					//load the URLBlob
+					activeBlob = urlBlob;
+				}
+			}
+			
+	
+			
+			// previous options decide how to set activeBlob, so proceed
+			doChecks(activeBlob);
+			doFilter(activeBlob);
+			
+			window.history.pushState('page', 'A Million Blue Pages', stringifyBlob(activeBlob));
+	
+			$("#permalink").attr('href', stringifyBlob(activeBlob));
+			
+		}
+		
+		function doChecks(blob){
+			// for later, a sanity check on the incoming blob would be helpful
+			// check all the right boxes --- hopefully this won't create infiniti
+			
+			// START HERE
+			
+			// 1. empty
+			
+			if (blob.empty == 'hide'){
+				$("#hide-empty").prop("checked", true);
+				
+			}else{
+				$("#hide-empty").prop("checked", false);
+			}
+			
+			// 2. restrict by tag
+			
+			if (blob.tag == 'all'){
+				$("label.filter-tag input").each( function () {
+					$(this).prop("checked", false);
+				});
+			}else{
+				var tags = blob.tag.split('+');
+				for (var t = 0; t <= tags.length + 1; t++){
+					$("#filter-tag-"+tags[t]).prop("checked", true);
+				}
+			}
+			
+			
+			// 3. type
+			if (blob.type == 'all'){
+				$("label.filter-type input").each( function () {
+					$(this).prop("checked", false);
+				});
+			}else{
+				var types = blob.type.split('+');
+				for (var t = 0; t <= types.length + 1; t++){
+					$("#filter-type-"+types[t]).prop("checked", true);
+				}
+			}
+			
+			// 4. source
+			if (blob.source == 'all'){
+				$("label.filter-source input").each( function () {
+					$(this).prop("checked", false);
+				});
+			}else{
+				var sources = blob.source.split('+');
+				for (var t = 0; t <= sources.length + 1; t++){
+					$("#filter-source-"+sources[t]).prop("checked", true);
+				}
+			}
+
+			// 5. filters
+			if (blob.filters == 'hide'){
+				$("#hide-filter").prop("checked", false);
+				
+			}else{
+				$("#hide-filter").prop("checked", true);
+			}
+			
+			
+		}
+		
+		function stringifyBlob(blob){
+			return '?empty='+blob.empty+'&tag='+blob.tag+'&type='+blob.type+'&source='+blob.source+'&filters='+blob.filters;
+	
+		}
+		
+		function doFilter(blob){
+
+			// do filter card show hide
+
+			if (blob.filters == 'show'){
+
+				$("#pg-head").show();
+			}else{
+				$("#pg-head").hide();
+
+			}
+
+			// takes filters as an argument and applies whatever is needed from the filterBus();
+			
+			var selective = false;
+			
+			var par = ['tag','type','source'];
+			$(".pg-node").hide();
+			console.log(blob);
+			for (var p = 0; p <= 2; p++){
+				var pars = blob[par[p]].split('+');
+				for (var s = 0; s < pars.length; s++){
+						
+					var parameter = par[p];
+					var value	= pars[s];
+
+					if (value != 'all'){
+						selective = true;
+					}
+
+					if (selective){
+						$(".pg-node."+pars[s]).show();
+
+					}
+
+					
+
+				}
+			}
+
+			if (!selective){
+				$(".pg-node").show();
+			}
+			
+			
+			
+			
+			// hide rows 
+			// [[ do this last]]
+			$("#pg-content .pg").each( function(){
+				var isParent = false;
+				$(this).children(".pg-node").each( function(){
+					if ($(this).css('display') == 'block'){
+						isParent = true;
+					}
+				});
+				
+				if (!isParent & blob.empty == 'hide'){
+					$(this).hide();
+				}else{
+					$(this).show();
+				}
+			});
+			
+		}
+		
+		
+		function checked(filter){
+			var all = true;
+			var checked = new Array();
+			
+			$('label.filter-' + filter).each( function () { 
+				
+				if ($(this).find('input').prop('checked')){
+					checked.push($(this).attr('for').split('-').pop());
+					all = false;
+				}
+			});
+
+			if (all){
+				return('all');
+			}else{
+				return checked.join('+');
+			}
+		}
+		
+		// parse data by appending its thumbnail into the appropriate page DIV
+		function pageRows(data) {
+
+
+
+			var pg = data.cells.page;
+			//var node = makeNode(data.cells);
+			data.cells.imgthumb = false; // for non image thumbs like tweets etc which will be generically deployed from CSS
+			var imgthumbs = ["photo","video","image"];
+
+			if (imgthumbs.indexOf(data.cells.type) > -1){
+				data.cells.imgthumb = true;
+			}
+
+			data.cells.tags = data.cells.tags.replace(/,/g," "); 
+
+			var thesetags = data.cells.tags.split(" ");
+
+			for (var t = 0; t < thesetags.length; t++){	
+
+				if (thesetags[t] != 'hol14'){
+					if (!thesetags[t].match(/^p[0-9xiv]+/) ){
+						if (alltags.indexOf(thesetags[t]) == -1){
+							alltags.push(thesetags[t]); 
+							numbers.tag[thesetags[t]] = 1;
+						}else{
+							numbers.tag[thesetags[t]] += 1;
+						}
+					}
+				}
+			}
+			
+			if (allsources.indexOf(data.cells.source) < 0){
+				allsources.push(data.cells.source);
+				numbers.source[data.cells.source] = 1;
+			}else{
+				numbers.source[data.cells.source] += 1;
+
+			}
+			if (alltypes.indexOf(data.cells.type) < 0){
+				alltypes.push(data.cells.type);
+				numbers.type[data.cells.type] = 1;
+			}else{
+				numbers.type[data.cells.type] += 1;
+			}
+
+			$("#p"+pg).append( template(data.cells) );
+		}
+
+		// what it says on the box
+		function getURLParameter(name) {
+				return decodeURI(
+					(RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+				);
+			}
+	
+		// Utility function for romanizing
+		function romanize (num) {
+		    if (!+num)
+		        return false;
+		    var digits = String(+num).split(""),
+		        key = ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM",
+		               "","X","XX","XXX","XL","L","LX","LXX","LXXX","XC",
+		               "","I","II","III","IV","V","VI","VII","VIII","IX"],
+		        roman = "",
+		        i = 3;
+		    while (i--)
+		        roman = (key[+digits.pop() + (i * 10)] || "") + roman;
+		    return Array(+digits.join("") + 1).join("M") + roman;
+		}
+		
+
+
+	</script>
+	
+</head>
+<body>
+<div class="wrapper view">
+
+	<!--#include virtual="inc/header.html"-->
+	<div id="hol">
+		<div id="pg-filters" >
+
+			<div id="view-filters" class="pg">
+				<div class="pg-label">options</div>
+				<div class="filter-control">
+					<label class="empty-label" for="hide-empty">
+						<input type="checkbox" name="hide-empty" id="hide-empty" class="filter" />
+						Hide empty pages
+					</label>
+					
+					<label class="filter-label" for="hide-filter">
+						<input type="checkbox" name="hide-filter" id="hide-filter" class="filter" />
+						Use Filters
+					</label>
+
+					
+					
+				</div>
+			</div>
+			<div id="pg-head" class="pg">
+			
+				<div><p>Use the filters below to show and hide content by source, type, or tag. Filters combine with <strong>OR</strong> logic.</p></div>
+			
+			
+				<div id="source-filters" class="pg">
+					<div class="pg-label">sources</div>
+				</div>
+				
+				<div id="type-filters" class="pg">
+					<div class="pg-label">types</div>
+				</div>
+				
+				<div id="tag-filters" class="pg">
+					<div class="pg-label"><span title="Restrict by tags">tags</span></div>
+						
+				</div>
+				<div>
+					<div class="pg-label">&nbsp;</div>
+					<div class="button">
+						<a href="?empty=hide&tag=all&type=all&source=all&filters=show" id="reset" title="Reset filters to default values">Reset</a>
+					</div>
+					<div class="button">
+						<a href="" id="permalink" title="Link to current set of filters">Link</a>
+					</div>
+				</div>
+				<br style="clear: both" />
+ 			</div>
+		</div>
+		
+		<div id="pg-content"> 
+		<!--<div id="phead ">
+				<div class="pg-label">Page # </div>
+				<div>
+					<label for="emptyHide" class="filter-label">
+						<input type="checkbox" name="empty" id="emptyHide" class="filter"/>
+						Hide empty pages 
+					</label>
+				</div>
+		</div> -->
+		</div>
+
+	</div>
+</div>
+
+<!--#include virtual="inc/footer.html" -->
+
+
+<div id="nu">
+</div>
+
+<script id="node-template" type="text/x-handlebars-template">
+
+	<div class="pg-node {{type}} {{source}} {{tags}}">
+		<a href="{{link}}" target="_blank">
+			{{#if imgthumb}}
+				<img src="{{thumbnail}}" />
+			{{else}}
+				<div class="no-image">{{thumb}}</div>
+			{{/if}}
+			
+		</a>
+	</div>
+</script>
+</body>
+</html>
+

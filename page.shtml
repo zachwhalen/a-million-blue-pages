@@ -1,0 +1,166 @@
+<html>
+<head>
+	<link rel="icon" type="image/ico" href="favicon.ico"/>
+	<title>Page </title>
+<!--#include virtual="inc/head.html"-->
+		<script src="scripts/handlebars-v1.1.2.js"></script>
+
+	<script type="text/javascript">
+	
+	page = getURLParameter('page');
+
+	list = new Array();
+	url = "/page.shtml=?page=";
+
+	$(document).ready( function (){
+		// sanity checks:
+		if (!legitPg(page)){
+			$("#content").text("Error: Invalid page requested");
+		}else{
+
+			// add some page details
+			$("title").append(page);
+			$(".this-page").text(page);
+			
+			// let's try and figure out promises
+			$("#placeholder").sheetrock({
+				url : 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dEhQVENrb1I2SllPa19ZSjVtMWtNVEE&usp=drive_web#gid=0',
+				sql : 'select A where P != "skip"',
+				headersOff : true,
+			
+				rowHandler : function (data){ list.push(data.cells.page)}
+			});
+
+
+			$.fn.sheetrock.promise.then( function () {
+
+				// test if this is in the list of pages represented, if not we're done
+				if ($.inArray(page,list) == -1){
+					$("#tabletop").html("<p>Page " + page + " currently has no content associated with it.</p>");
+
+				}else{
+					
+					$("#tabletop").sheetrock({
+						url : 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dEhQVENrb1I2SllPa19ZSjVtMWtNVEE&usp=drive_web#gid=0',
+						sql : 'select * where A = "' + page +'"',
+						headersOff : true
+					});
+
+				}
+
+			});
+		
+		}
+
+		var position = $.inArray(page,list);
+
+		// do the rest of the load stuff
+		$("#single-page-next a").attr("href", url+list[position+1]);
+		
+		$("#single-page-prev a").attr("href", url+list[position-1]);
+	});
+
+	function prepareCard () {
+		// should take data from ss and return network, type, content, caption, author [separated from e.g. booksafterbooks]
+		
+		
+	}
+
+
+	</script>
+	
+	<style>
+	.pg-node {
+
+		background-color: #2c4762;
+		width: 30px;
+		height: 30px;
+	}
+
+	#legend {
+
+		width: 24px;
+		height: 24px;
+		position: absolute;
+		bottom:0;
+		left:0;
+		background-color: transparent;
+		background-image: url(img/icons.png);
+	}
+	</style>
+	
+</head>
+
+<body class="single-page">
+	<div id="placeholder"></div>
+
+<div class="wrapper ">
+	<!--#include virtual="inc/header.html"-->
+	<div class="pg-node">
+		&nbsp;
+		<div id="legend"></div>
+	</div>
+	
+	<div id="content">	
+		<div id="single-page-nav-bar">
+			<div class="single-page-direction" id="single-page-next">
+				<span class="nav-arrow"><a href="#">&raquo;</a></span>
+				<span class="next-page-number">14</span>
+			</div>
+
+			<div class="single-page-direction" id="single-page-prev">
+				<span class="nav-arrow"><a href="#">&laquo;</a></span>
+				<span class="prev-page-number">2</span>
+			</div>
+			<div class="single-page-title" id="single-page-this">
+				Page <span class="this-page">47</span>
+			</div>
+		</div>
+
+		<div id="tabletop">
+			<!-- load the content cards here -->
+
+		</div>
+
+	</div>
+	
+	 
+	<!--    <div id="disqus_thread"></div>
+   <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'amillionbluepages'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a> 
+	-->
+
+    
+ </div>
+<!--#include virtual="inc/footer.html" -->
+<script id="node-template" type="text/x-handlebars-template">
+	<div class="card {{network}} {{type}}">
+		<div class="container">
+			<div class="card-head"><span class="network-legend">&nbsp;</span></div>
+			
+			<div class="card-content">
+				{{content}}
+			</div>
+			<div class="card-caption">
+				{{caption}}
+			</div>
+		</div>
+	
+	</div>
+
+</script>
+
+
+</body>
+</html>

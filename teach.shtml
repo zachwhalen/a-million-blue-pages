@@ -1,0 +1,162 @@
+<html>
+<head>
+	
+	<title>A Million Blue Pages - Teaching</title>
+		<!--#include virtual="inc/head.html"-->
+	<script type="text/javascript">
+	
+	$(document).ready( function () { 
+	var teachGrid = new Array();
+
+	teachGrid = [
+		{
+			'who' : 'Zach Whalen', 
+			'where' : 'University of Mary Washington',
+			'start' : '5',
+			'end' : '8',
+			'web' : 'http://booksafterbooks.tumblr.com/mediations#two',
+			'confidence' : 'yes',
+			'what' : 'ENGL 451: After Books'
+		},
+		{
+			'who' : 'Mary Holland', 
+			'where' : 'SUNY New Paltz',
+			'start' : '5',
+			'end' : '7',
+			'what' : 'ENGL 428: 21st Century Fiction',
+			'confidence' : 'yes',
+		},
+		{
+		    'who' : 'Steven Lemieux',
+			'where' : 'University of Texas at Austin',
+			'start' : '5',
+			'end' : '8',
+			'what' : '',
+			'confidence' : 'yes'
+		},
+		{
+			'who' : 'Mary Holland', 
+			'where' : 'SUNY New Paltz',
+			'start' : '12',
+			'end' : '14',
+			'what' : 'ENG 593: Contemporary Metafiction',
+			'confidence' : 'yes'
+		
+		},
+		{
+			'who' : 'Brian Croxall', 
+			'where' : 'Emory University',
+			'start' : '12',
+			'end' : '14',
+			'confidence' : 'yes',
+			'what' : ''
+		},
+		{
+			'who' : 'Chuck Rybak', 
+			'where' : 'University of Wisconsin Green Bay',
+			'start' : '13',
+			'end' : '16',
+			'confidence' : 'yes',
+			'what' : ''
+		},
+		{
+			'who' : 'Paul Hurh', 
+			'where' : 'University of Arizona',
+			'start' : '13',
+			'end' : '16',
+			'confidence' : 'yes',
+			'what' : ''
+		},
+		{
+			'who' : 'Jeremy Douglass', 
+			'where' : 'University of Wisconsin Green Bay',
+			'start' : '14',
+			'end' : '20',
+			'confidence' : 'yes',
+			'what' : ''
+		}	 
+	];
+
+	for (var g = 0; g < teachGrid.length; g++){
+		var teach = teachGrid[g];
+		var row = new Array();
+		row[0] = '<td class="teacher"><span class="who">' + teach.who + '</span><span class="what">';
+		if (teach.web){
+			row[0] += '<a href="'+teach.web+'">'+teach.what+'</a></span>';
+		}else{
+			row[0] += teach.what + '</span>';
+		}
+
+		row[0] += '<span class="where">' + teach.where + '</span></td>';
+		for (var c = 1; c <= 20; c++){
+			row[c] += '<td class="';
+			if (c >= teach.start && c <= teach.end){
+				row[c] += 'on ';
+				row[c] += teach.confidence;
+
+			}
+			row[c] += '">&nbsp;</td>';
+		}
+		row[20] += '</tr>';
+
+		$('.teach table').append('<tr>'+row+'</tr>');
+	}
+
+	
+	
+	});
+
+	</script>
+	
+</head>
+
+<body class="teaching">
+<div class="wrapper teach">
+	<!--#include virtual="inc/header.html"-->
+	<div id="content">
+<h1>Teaching</h1>
+
+<h2>Classes participating in #hol14</h2>
+<table>
+	<tr> 
+		<td>&nbsp;</td>
+		<td class="col1"><span>Jan</span> 6 - 10</td>
+		<td class="col2"><span>&nbsp;</span>13 - 17</td>
+		<td class="col3"><span>&nbsp;</span>20 - 24</td>
+		<td class="col4"><span>&nbsp;</span>27 - 31</td>
+		<td class="col5"><span>Feb<span> 3 - 7</td>
+		<td class="col6"><span>&nbsp;</span>10 - 14</td>
+		<td class="col7"><span>&nbsp;</span>17 - 21</td>
+		<td class="col8"><span>&nbsp;</span>24 - 28</td>
+		<td class="col9"><span>Mar</span> 3 - 7</td>
+		<td class="col10"><span>&nbsp;</span>10 - 14</td>
+		<td class="col11"><span>&nbsp;</span>17 - 21</td>
+		<td class="col12"><span>&nbsp;</span>24 - 28</td>
+		<td class="col13"><span>&nbsp;</span>31 - 4</td>
+		<td class="col14"><span>Apr</span> 7 - 11</td>
+		<td class="col15"><span>&nbsp;</span>14 - 18</td>
+		<td class="col16"><span>&nbsp;</span>21 - 25</td>
+		<td class="col17"><span>&nbsp;</span>28 - 2</td>
+		<td class="col18"><span>May</span>5 - 9</td>
+		<td class="col19"><span>&nbsp;</span>12 - 16</td>
+		<td class="col20"><span>&nbsp;</span>19 - 23</td>
+	</tr>
+	
+</table>
+	
+
+<h2>Assignments</h2>
+(maybe link to course blogs or LMS pages)
+
+<h2>Collaborations</h2>
+(ideas, planned events)
+
+</div>
+</div>
+<!--#include virtual="inc/footer.html" -->
+
+
+
+
+</body>
+</html>
