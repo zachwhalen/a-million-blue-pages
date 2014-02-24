@@ -65,12 +65,7 @@
 
 			// add extra labels to row.
 
-			$(".pg").each( function () { 
-				var pg = $(this).attr('id').substring(1);
-				if (extraLabels[pg]){
-					$(this).prepend("<div class='extralabel'>"+extraLabels[pg]+"</div");
-				}
-			});
+			
 
 			// Go get the data from SS
 			$('#nu').sheetrock({
