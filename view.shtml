@@ -38,7 +38,7 @@
 			'type' : 'all',
 			'source' : 'all',
 			'filters' : 'hide',
-			'ts' : 'small'
+			'ts' : 'larger'
 		};
 		
 		clicked = false;
