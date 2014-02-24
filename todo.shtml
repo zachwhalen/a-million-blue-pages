@@ -27,20 +27,23 @@
 		<li><strike>add blosxom for news feed</strike></li>
 		<li><strike>resizable thumbnails in table view</strike></li>
 		<li><strike>tag scraping for non-numeric pages</strike></li>
-		
+		<li><strike>Add chapter and other labels to pages other than the first page. (Use thePages object, maybe.)</strike></li>
+		<li><strike>put this whole thing in github</strike></li>
+		<li><strike>Hardcode page rows with SSI.</strike></li>
+
 		<li>single page viewer</li>
 		<li>direct submission via a form</li>
 		
 		<li>Reorganize Google Apps side</li>
 		
-		<li><strike>Hardcode page rows with SSI.</strike></li>
+		
 		
 		<li><strike>Add titles to what gets scraped, exchanged</strike> -- <strike>well, it wouldn't fit in table view anyway. is already in JSON for page view, so.</strike> <ins>but some kind of meta information in title attribute would be helpful</ins></li>
 		
-		<li>put this whole thing in github</li>
+		
 		<li>add classes and assignment links to teaching page</li>
 		<li>Get control of the tags in filter bus, set some to be featured, hide others</li>
-		<li>Add chapter and other labels to pages other than the first page. (Use thePages object, maybe.)</li>
+		
 		<li>Make it look better</li>
 		<li>Add statistics</li>
 		<li>
