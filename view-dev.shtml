@@ -65,46 +65,6 @@
 			
 
 
-			/*var beforeNums = ['Cover', 'Cover-Flap','Inside-cover', 'Collage-Recto', 'Collage-Verso']
-			for (var b = 0; b < beforeNums.length; b++){
-
-				
-				$("#pg-content").append("<div class='pg' id='p" + beforeNums[b].toUpperCase() + "'><div class='pg-label'>" + beforeNums[b] + "</div> </div>\n");
-
-			}
-
-
-			// Construct the page numbers and rows:
-			for (var x = 1; x <= 26; x++){
-				var num = romanize(x);
-				$("#pg-content").append("<div class='pg hasNot' id='p" + num + "'><div class='pg-label'>" + num + "</div> </div>\n");
-
-			}
-
-			for (var i = 1; i <= 710; i++){
-
-				// Create the page rows
-				// I should hard code these eventually, for savings
-				$("#pg-content").append("<div class='pg hasNot' id='p" + i + "'><div class='pg-label'>" + i + "</div> </div>\n");
-
-			}
-
-			
-
-			var implied = ['0','i', 'ii','iii','iv','v','vi','vii','viii','ix','x', '710'];
-
-			afterNums = ['Inside-Back','Back-Cover' ];
-			// render these
-			for (var a = 0; a < afterNums.length; a++){
-
-				
-				$("#pg-content").append("<div class='pg' id='p" + afterNums[a].toUpperCase() + "'><div class='pg-label'>" + afterNums[a] + "</div> </div>\n");
-
-			}*/
-
-
-
-			
 
 
 			// add extra labels to row.
@@ -281,7 +241,15 @@
 		</div>
 		
 		<div id="pg-content"> 
-		<!--#include virtual="inc/rows.html" -->
+		<!--<div id="phead ">
+				<div class="pg-label">Page # </div>
+				<div>
+					<label for="emptyHide" class="filter-label">
+						<input type="checkbox" name="empty" id="emptyHide" class="filter"/>
+						Hide empty pages 
+					</label>
+				</div>
+		</div> -->
 		</div>
 
 	</div>
