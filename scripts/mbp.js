@@ -126,7 +126,14 @@ function locatePage (g, roms, nums){
 	return false;
 }
 
-
+/* a helper, so I can refer to pages by name or raw order. */
+function getPageByName(name){
+	for (var p = 0; p <= 742; p++){ // note, this is hardcoded. Change 742 if pages change
+		if (thePages[p].name == name){
+			return thePages[p];
+		}
+	}
+}
 
 
 function legitPg (pg) {
@@ -150,9 +157,39 @@ function legitPg (pg) {
 	}
 }
 
-// just make a big, reusable Pages object
+function legitPage(pg){
+	// to replace legitPg
+	// return an index for page requested if it exists in thePages.
+	var requested = getPageByName(pg);
+	if(typeof requested != 'undefined'){
+		return thePages[requested.raw];
+	}
+
+}
 
 
+function findNext(raw,pagesList){
+	for (var r = raw + 1; typeof next == 'undefined'; r++ ){		
+		if ($.inArray(String(thePages[r].name), pagesList) > -1){
+			next = thePages[r].name;
+		} 
+		if (r == 743){
+			next = 'end';
+		}
+	}
+	return next;
+}
+
+function findPrevious(raw,pagesList){
+	for (var r = raw - 1; typeof previous == 'undefined'; r -= 1 ){		
+		if (typeof thePages[r] == 'undefined'){
+			previous = 'begin';
+		}else if ($.inArray(String(thePages[r].name), pagesList) > -1){
+			previous = thePages[r].name;
+		} 	
+	}
+	return previous;
+}
 
 function filterBus() {
 	// a generalized filtering function
@@ -366,6 +403,7 @@ function doFilter(blob){
 		}
 
 		if ($(this).css("display") == 'block'){
+
 			if (thePages[rowCount].section != activeLabel){ 
 				
 				activeLabel = thePages[rowCount].section;

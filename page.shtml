@@ -8,13 +8,13 @@
 	<script type="text/javascript">
 	
 	page = getURLParameter('page');
-
-	list = new Array();
+	pageData = legitPage(page);
+	pagesList = new Array();
 	url = "/page.shtml=?page=";
 
 	$(document).ready( function (){
 		// sanity checks:
-		if (!legitPg(page)){
+		if (!pageData){
 			$("#content").text("Error: Invalid page requested");
 		}else{
 
@@ -28,18 +28,19 @@
 				sql : 'select A where P != "skip"',
 				headersOff : true,
 			
-				rowHandler : function (data){ list.push(data.cells.page)}
+				rowHandler : function (data){ pagesList.push(String(data.cells.page).toUpperCase())}
 			});
 
 
 			$.fn.sheetrock.promise.then( function () {
 
-				// test if this is in the list of pages represented, if not we're done
-				if ($.inArray(page,list) == -1){
+				// test if this is in the list of pages with content, if not we're done
+				if ($.inArray(page,pagesList) == -1){
 					$("#tabletop").html("<p>Page " + page + " currently has no content associated with it.</p>");
 
 				}else{
 					
+					// load this page's content
 					$("#tabletop").sheetrock({
 						url : 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dEhQVENrb1I2SllPa19ZSjVtMWtNVEE&usp=drive_web#gid=0',
 						sql : 'select * where A = "' + page +'"',
@@ -52,12 +53,14 @@
 		
 		}
 
-		var position = $.inArray(page,list);
+		var position = $.inArray(page,pagesList);
+		// find the next and previous pages with content
+
 
 		// do the rest of the load stuff
-		$("#single-page-next a").attr("href", url+list[position+1]);
+		$("#single-page-next a").attr("href", url+pagesList[position+1]);
 		
-		$("#single-page-prev a").attr("href", url+list[position-1]);
+		$("#single-page-prev a").attr("href", url+pagesList[position-1]);
 	});
 
 	function prepareCard () {
