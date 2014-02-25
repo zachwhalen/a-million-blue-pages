@@ -169,7 +169,11 @@ function legitPage(pg){
 
 
 function findNext(raw,pagesList){
-	for (var r = raw + 1; typeof next == 'undefined'; r++ ){		
+	var next;
+	for (var r = raw + 1; typeof next == 'undefined'; r++ ){	
+		//console.log(r);
+		//console.log(r+" "+$.inArray(String(thePages[r].name), pagesList));
+
 		if ($.inArray(String(thePages[r].name), pagesList) > -1){
 			next = thePages[r].name;
 		} 
@@ -181,6 +185,7 @@ function findNext(raw,pagesList){
 }
 
 function findPrevious(raw,pagesList){
+	var previous;
 	for (var r = raw - 1; typeof previous == 'undefined'; r -= 1 ){		
 		if (typeof thePages[r] == 'undefined'){
 			previous = 'begin';

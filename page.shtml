@@ -47,20 +47,21 @@
 						headersOff : true
 					});
 
+					
+
 				}
 
+				var next = findNext(pageData.raw,pagesList)
+				var previous = findPrevious(pageData.raw,pagesList)
+				$("#single-page-next a").attr("href", url+next);
+				$("#single-page-next a .next-page-number").text(next);
+				$("#single-page-prev a").attr("href", url+previous);
+				$("#single-page-prev a .prev-page-number").text(previous);
 			});
 		
 		}
 
-		var position = $.inArray(page,pagesList);
-		// find the next and previous pages with content
-
-
-		// do the rest of the load stuff
-		$("#single-page-next a").attr("href", url+pagesList[position+1]);
-		
-		$("#single-page-prev a").attr("href", url+pagesList[position-1]);
+	
 	});
 
 	function prepareCard () {
@@ -99,21 +100,17 @@
 
 <div class="wrapper ">
 	<!--#include virtual="inc/header.html"-->
-	<div class="pg-node">
-		&nbsp;
-		<div id="legend"></div>
-	</div>
-	
+		
 	<div id="content">	
 		<div id="single-page-nav-bar">
 			<div class="single-page-direction" id="single-page-next">
-				<span class="nav-arrow"><a href="#">&raquo;</a></span>
-				<span class="next-page-number">14</span>
+				<span class="nav-arrow"><a href="#" title="View the next page with associated content">&raquo;</br />
+				<span class="next-page-number">0</span></a></span>
 			</div>
 
 			<div class="single-page-direction" id="single-page-prev">
-				<span class="nav-arrow"><a href="#">&laquo;</a></span>
-				<span class="prev-page-number">2</span>
+				<span class="nav-arrow"><a href="#" title="View the previous page with associated content">&laquo;<br />
+				<span class="prev-page-number">0</span></a></span>
 			</div>
 			<div class="single-page-title" id="single-page-this">
 				Page <span class="this-page">47</span>
