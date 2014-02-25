@@ -10,7 +10,7 @@
 	page = getURLParameter('page');
 	pageData = legitPage(page);
 	pagesList = new Array();
-	url = "/page.shtml=?page=";
+	url = "/page.shtml?page=";
 
 	$(document).ready( function (){
 		// sanity checks:
