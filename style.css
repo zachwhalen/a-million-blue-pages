@@ -440,3 +440,10 @@ div.view.larger .pg-node img, div.view.larger .pg-node .no-image {
 div.view.larger .photo #legend, div.view.larger .video #legend {
     display: block;
 }
+
+#tag-filters {
+	padding-left: 193px;
+}
+#tag-filters .pg-label {
+	margin-left: -83px;
+}
