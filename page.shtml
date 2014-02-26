@@ -11,6 +11,7 @@
 	pageData = legitPage(page);
 	pagesList = new Array();
 	url = "/page.shtml?page=";
+	pageCounter = 0;
 
 	$(document).ready( function (){
 		// sanity checks:
@@ -18,11 +19,15 @@
 			$("#content").text("Error: Invalid page requested");
 		}else{
 
-			// add some page details
+			$("#goto-page").click(function(){
+				document.location.href='page.shtml?page='+$("#goto").val().toUpperCase();
+			});
+			
+						// add some page details
 			$("title").append(page);
 			$(".this-page").text(page);
 			
-			// let's try and figure out promises
+			// let's try and figure out promise
 			$("#placeholder").sheetrock({
 				url : 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dEhQVENrb1I2SllPa19ZSjVtMWtNVEE&usp=drive_web#gid=0',
 				sql : 'select A where P != "skip"',
@@ -35,7 +40,7 @@
 			$.fn.sheetrock.promise.then( function () {
 
 				// test if this is in the list of pages with content, if not we're done
-				if ($.inArray(page,pagesList) == -1){
+				if ($.inArray(page.toUpperCase(),pagesList) == -1){
 					$("#tabletop").html("<p>Page " + page + " currently has no content associated with it.</p>");
 
 				}else{
@@ -43,8 +48,9 @@
 					// load this page's content
 					$("#tabletop").sheetrock({
 						url : 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dEhQVENrb1I2SllPa19ZSjVtMWtNVEE&usp=drive_web#gid=0',
-						sql : 'select * where A = "' + page +'"',
-						headersOff : true
+						sql : 'select * where A = "' + page.toLowerCase() +'" and P != "skip"',
+						headersOff : true,
+						rowHandler : prepareCard
 					});
 
 					
@@ -64,13 +70,54 @@
 	
 	});
 
-	function prepareCard () {
+	function prepareCard (data) {
+		var card;
+		var template;
+		var instagramTemplate = $("#card-template-instagram").html();
+		var twitterTemplate = $("#card-template-twitter").html();
+		var vineTemplate = $("#card-template-vine").html();
+		
+		//console.log(data);
+		if (data.cells.source == 'instagram'){
+			var obj = data.cells;		
+			template = Handlebars.compile(instagramTemplate);
+			card = template(obj);
+		}
+		
+		if (data.cells.source == 'tumblr'){
+			var obj = data.cells;
+			obj.content = tumblrHelper(data.cells.data);
+			
+		}
+		
+		if (data.cells.source == 'twitter'){
+			var obj = data.cells;
+			template = Handlebars.compile(twitterTemplate);
+			card = template(obj);
+		}
+		
+		if (data.cells.source == 'vine'){
+			var obj = data.cells;
+			template = Handlebars.compile(vineTemplate);
+			card = template(obj);
+		}
+		if (typeof card != 'undefined'){
+			$("#tabletop").append(card);
+		}
 		// should take data from ss and return network, type, content, caption, author [separated from e.g. booksafterbooks]
-		
-		
+		// prepare an object
+		// pass that to handlebars
+		// add take that chunk and append it to #tabletop
 	}
 
-
+	function normalizeTime(time){
+		return "A better timestring";
+	}
+	function tumblrHelper(rawData){
+		// return appropriate html for embedding
+		var data = $.parseJSON(rawData);
+		
+	}
 	</script>
 	
 	<style>
@@ -104,17 +151,21 @@
 	<div id="content">	
 		<div id="single-page-nav-bar">
 			<div class="single-page-direction" id="single-page-next">
-				<span class="nav-arrow"><a href="#" title="View the next page with associated content">&raquo;</br />
+				<span class="nav-arrow"><a href="#" title="Next page with associated content">&raquo;</br />
 				<span class="next-page-number">0</span></a></span>
 			</div>
 
 			<div class="single-page-direction" id="single-page-prev">
-				<span class="nav-arrow"><a href="#" title="View the previous page with associated content">&laquo;<br />
+				<span class="nav-arrow"><a href="#" title="Previous page with associated content">&laquo;<br />
 				<span class="prev-page-number">0</span></a></span>
 			</div>
+			
+			<div class="jump-to-page">
+				<form name="jump" action="page.shtml">Jump to page <input type="text" width="6" name="page" id="goto" value=""> <input type="submit" id="goto-page" value="GO"></form>
+			</div>	
 			<div class="single-page-title" id="single-page-this">
 				Page <span class="this-page">47</span>
-			</div>
+				</div>
 		</div>
 
 		<div id="tabletop">
@@ -125,8 +176,10 @@
 	</div>
 	
 	 
-	<!--    <div id="disqus_thread"></div>
-   <script type="text/javascript">
+	<!--    
+	
+	<div id="disqus_thread"></div>
+    <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
         var disqus_shortname = 'amillionbluepages'; // required: replace example with your forum shortname
 
@@ -139,18 +192,20 @@
     </script>
     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a> 
+
 	-->
 
     
  </div>
 <!--#include virtual="inc/footer.html" -->
-<script id="node-template" type="text/x-handlebars-template">
-	<div class="card {{network}} {{type}}">
+
+<script id="card-template-tumblr" type="text/x-handlebars-template">
+	<div class="card tumblr {{type}}">
 		<div class="container">
-			<div class="card-head"><span class="network-legend">&nbsp;</span></div>
+			<div class="card-head"><span class="source-legend">&nbsp;</span></div>
 			
 			<div class="card-content">
-				{{content}}
+				{{link
 			</div>
 			<div class="card-caption">
 				{{caption}}
@@ -161,6 +216,60 @@
 
 </script>
 
+<script id="card-template-instagram" type="text/x-handlers-template">
+
+	<div class="card instagram {{type}}">
+		<div class="container">
+			<div class="card-head"><span class="source-legend">&nbsp;</span></div>
+			
+			<div class="card-content">
+				<iframe src="{{link}}embed/" width="300" height="364" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
+			</div>
+		</div>
+	</div>
+
+</script>
+
+<script id="card-template-twitter" type="text/x-handlers-template">
+	<div class="card twitter">
+		<div class="container">
+			<div class="card-head"><span class="source-legend">&nbsp;</span></div>
+			<div class="card-content">
+				
+				<blockquote class="twitter-tweet" lang="en" width="300"><a href="{{link}}">&nbsp;</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+				
+				</div>
+		</div>
+	</div>
+
+</script>
+
+<script id="card-template-vine" type="text/x-handlers-template">
+	<div class="card vine">
+		<div class="container">
+			<div class="card-head"><span class="source-legend">&nbsp;</span></div>
+			<div class="card-content">
+				<iframe class="vine-embed" src="{{link}}/embed/postcard" width="300" height="300" frameborder="0"></iframe><script async src="//platform.vine.co/static/scripts/embed.js" charset="utf-8"></script>
+				
+			</div>
+		</div>
+	</div>
+
+</script>
+
+<script id="card-template-tumblr" type="text/x-handlers-template">
+	<div class="card tumblr">
+		<div class="container">
+			<div class="card-head"><span class="source-legend">&nbsp;</span></div>
+			<div class="card-content">
+				
+				
+			</div>
+		</div>
+	</div>
+
+</script>
 
 </body>
 </html>

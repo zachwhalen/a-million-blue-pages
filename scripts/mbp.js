@@ -408,7 +408,7 @@ function doFilter(blob){
 		}
 
 		if ($(this).css("display") == 'block'){
-
+			pageCounter++;
 			if (thePages[rowCount].section != activeLabel){ 
 				
 				activeLabel = thePages[rowCount].section;

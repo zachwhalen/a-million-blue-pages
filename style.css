@@ -371,6 +371,10 @@ span.counter {
     margin-top:-26pt;
 }
 
+.prev-page-number, .next-page-number {
+	font-size: 48pt;
+}
+
 .teaching .teacher {
     text-align: left;
 
@@ -446,4 +450,35 @@ div.view.larger .photo #legend, div.view.larger .video #legend {
 }
 #tag-filters .pg-label {
 	margin-left: -83px;
+}
+
+.jump-to-page{
+	width: 25%;
+	text-align: center;
+	font-size: 12pt;
+	margin: 0 auto;
+}
+
+#goto {
+	width: 4em;
+	background-color: transparent;
+	border: 1px solid #555;
+	color:white;
+	padding: 4px;
+}
+#goto-page:hover {
+	cursor: hand;
+}
+#goto-page {
+border: none;
+background-color: #aaa;
+font-weight: bold;
+font-family: 'Open Sans';
+}
+#statistics {
+	position: absolute;
+	right: 0;
+	top: 2px;
+	font-size: 82%;
+	font-style: italic;
 }

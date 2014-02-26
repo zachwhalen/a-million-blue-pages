@@ -12,6 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="style.css" />
 	<script type="text/javascript">
 
+		pageCounter = 0;
 
 		$("#reset").click( function (){
 
@@ -61,7 +62,7 @@
 			allsources = new Array();
 			alltypes = new Array();
 			
-
+			totalNodes = 0;
 
 			// add extra labels to row.
 
@@ -77,7 +78,7 @@
 			});
 
 			function keepDoingStuff(){
-	
+				
 	
 				// add tag filter checkboxes
 				var featuredTags = ["engl451","engl428"];
@@ -117,6 +118,13 @@
 					
 				});
 		
+		
+		
+				// load statistics
+				$("#statistics").html("<span class='stat' id='total-nodes'><strong class='house'>"+ totalNodes + "</strong> total nodes,</span>\n" + 
+										"<span class='stat' id='pages-covered'> covering <strong class='house'>"+ pageCounter + "</strong> pages. </span><br />\n" + 
+										"<span class='stat' id='pages-left'><strong class='house'>" + (742 - pageCounter) + "</strong> pages left to cover. </span>");
+				
 			
 			}
 
@@ -131,7 +139,8 @@
 		
 		// parse data by appending its thumbnail into the appropriate page DIV
 		function pageRows(data) {
-
+			
+			totalNodes++;
 			//console.log(data);
 
 			var pg = data.cells.page;
@@ -193,8 +202,17 @@
 		<div id="pg-filters" >
 
 			<div id="view-filters" class="pg">
+			
+				<div id="statistics">
+					
+					
+				</div>
+			
 				<div class="pg-label">options</div>
 				<div class="filter-control">
+				
+					
+				
 					<label class="empty-label" for="hide-empty">
 						<input type="checkbox" name="hide-empty" id="hide-empty" class="filter" />
 						Hide empty pages
