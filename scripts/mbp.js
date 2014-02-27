@@ -129,7 +129,7 @@ function locatePage (g, roms, nums){
 /* a helper, so I can refer to pages by name or raw order. */
 function getPageByName(name){
 	for (var p = 0; p <= 742; p++){ // note, this is hardcoded. Change 742 if pages change
-		if (thePages[p].name == name){
+		if (thePages[p].name == name.toUpperCase()){
 			return thePages[p];
 		}
 	}

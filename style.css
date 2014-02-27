@@ -482,3 +482,101 @@ font-family: 'Open Sans';
 	font-size: 82%;
 	font-style: italic;
 }
+
+
+.card-meta, .card-caption, .card-head, .card-embed {
+    width: 300px;
+    padding: 5px;
+}
+
+.card-caption, .card-meta, .card-embed {
+    background-color: #fafafa;
+    color: #444;
+}
+.card-meta, .card-tags {
+
+    color: #888;
+    font-size: 88%;
+
+}
+.card.tumblr {
+    background-color: #2c4762;
+    font-family: 'Open Sans', Helvetica, sans-serif;
+    font-size: 9pt;
+}
+
+.card.tumblr .card-meta a, .card.tumblr .card-tags a {
+    text-decoration: none;
+    color: #888;
+    font-style: italic;
+}
+
+.card {
+    float: left;
+    margin: 10px 20px 20px 0;
+    padding: 10px;
+    border-radius: 2px;
+}
+
+#tableedge {
+    border-top: 1px dotted #555;
+    clear: both;
+}
+.card.instagram {
+
+    background-color: #3f729b;
+}
+
+.card.twitter {
+    background-color: #0084b4;
+}
+.embed-tumblr-link a {
+    display: block;
+    text-decoration: none;
+    background-color: #529ecc;
+    
+    font-weight: bold;
+    color: white;
+    font-size: 28pt;
+    
+}
+.card-link-title {
+    display: block;
+width: 284px;
+padding: 8px;
+}
+
+a.tumblr-text-link {
+	display: block;
+	width: 284px;
+	height: 244px;
+	border: 3px solid #333;
+	overflow: hidden;
+	padding: 5px;
+	text-decoration: none;
+	font-family: 'Georgia';
+	color: #333;
+	font-size: 12pt;
+	background-color: #ddd;
+}
+a.tumblr-text-link:hover{
+	color: #2c4762;
+	border-color: #2c4762;
+}
+
+.tumblr-shim {
+	background: transparent url(img/text-shim.png) bottom left no-repeat;
+	width: 294px;
+	height: 254px;
+	margin: -5px;
+	position: absolute;
+}
+
+.tumblr-audio-image {
+	float:right;
+}
+
+
+
+
+

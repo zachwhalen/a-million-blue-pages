@@ -76,7 +76,7 @@
 		var instagramTemplate = $("#card-template-instagram").html();
 		var twitterTemplate = $("#card-template-twitter").html();
 		var vineTemplate = $("#card-template-vine").html();
-		
+		var tumblrTemplate = $("#card-template-tumblr").html();
 		//console.log(data);
 		if (data.cells.source == 'instagram'){
 			var obj = data.cells;		
@@ -85,9 +85,10 @@
 		}
 		
 		if (data.cells.source == 'tumblr'){
-			var obj = data.cells;
-			obj.content = tumblrHelper(data.cells.data);
 			
+			obj = tumblrHelper(data.cells.data);
+			template = Handlebars.compile(tumblrTemplate);
+			card = template(obj);
 		}
 		
 		if (data.cells.source == 'twitter'){
@@ -115,8 +116,93 @@
 	}
 	function tumblrHelper(rawData){
 		// return appropriate html for embedding
+
+		var template;
+		var tags = new Array();
 		var data = $.parseJSON(rawData);
-		
+		console.log(data);
+		var obj = {
+			'source' : 'tumblr',
+			'type' : data.type,
+			'creator' : (data.post_author ? data.post_author : data.blog_name),
+			'caption' : data.caption,
+			'slug' : data.slug,
+			'link' : data.post_url,
+			'date' : data.date,
+			'title' : data.title,
+			'link_image' : data.link_image
+		};
+
+		switch (obj.type){
+			case "photo":
+				// create photo-specific embed code
+				var photo;
+			
+				// pull out the medium-sized version, if available
+				for (var p = 0; typeof photo == 'undefined'; p++){	
+					// fallback
+					if (p >= data.photos[0].alt_sizes.length){
+						photo = data.photos[0].original_size;
+					}else if (data.photos[0].alt_sizes[p].width == 400){
+						photo = data.photos[0].alt_sizes[p];
+					}
+				}
+
+				// round down to 300px wide
+				photo.height = Math.round((300 / photo.width) * photo.height);
+				photo.width = 300;
+
+				// assign the image part back to obj
+				obj.photo = photo;
+
+				// construct the appropriate template
+				template = Handlebars.compile($("#embed-tumblr-photo").html());
+				//console.log(obj);
+				obj.embed = template(obj);
+				break;
+
+			case "text":
+				// text-specific embed code
+				obj.body = data.body;
+				template = Handlebars.compile($("#embed-tumblr-text").html());
+				obj.embed = template(obj);
+				break;
+				
+			case "link":
+				obj.link_image;
+				template = Handlebars.compile($("#embed-tumblr-link").html());
+				//console.log(obj);
+				obj.embed = template(obj);
+				obj.caption = data.description;
+				break;
+			
+			case "video":
+				obj.id = data.id;
+				obj.blog_name = data.blog_name;
+				template = Handlebars.compile($("#embed-tumblr-video").html());
+				obj.embed = template(obj);
+				break;
+			
+			case "audio":
+				//if (data.embed){
+				//	obj.embed = data.embed.replace("width=\"500\"", "width=\"300\"");
+				//}
+				if (data.player){
+					obj.player = data.player;
+				}
+				obj.album_art = data.album_art;
+				
+				template = Handlebars.compile($("#embed-tumblr-audio").html());
+				obj.embed = template(obj);
+		}
+
+		for (var t = 0; t < data.tags.length; t++){
+			tags.push('<a href="//www.tumblr.com/tagged/'+data.tags[t] +'" target="_blank" title="Explore other Tumblr posts tagged '+ data.tags[t]+'">#' + data.tags[t] + "</a>\n");
+		}
+		obj.tags = tags.join(", ");
+
+		return obj;
+	
 	}
 	</script>
 	
@@ -172,7 +258,9 @@
 			<!-- load the content cards here -->
 
 		</div>
-
+		<div id="tableedge">
+			&nbsp;
+		</div>
 	</div>
 	
 	 
@@ -199,22 +287,6 @@
  </div>
 <!--#include virtual="inc/footer.html" -->
 
-<script id="card-template-tumblr" type="text/x-handlebars-template">
-	<div class="card tumblr {{type}}">
-		<div class="container">
-			<div class="card-head"><span class="source-legend">&nbsp;</span></div>
-			
-			<div class="card-content">
-				{{link
-			</div>
-			<div class="card-caption">
-				{{caption}}
-			</div>
-		</div>
-	
-	</div>
-
-</script>
 
 <script id="card-template-instagram" type="text/x-handlers-template">
 
@@ -259,17 +331,78 @@
 </script>
 
 <script id="card-template-tumblr" type="text/x-handlers-template">
-	<div class="card tumblr">
+	<div class="card tumblr {{type}}">
 		<div class="container">
 			<div class="card-head"><span class="source-legend">&nbsp;</span></div>
-			<div class="card-content">
+			<div class="card-embed">
 				
-				
+				{{{embed}}}
+			</div>
+			<div class="card-meta">
+				posted by <span class="card-user">{{creator}}</span>, <a href="{{link}}" target="_blank" title="{{slug}}"><span class="card-date">{{date}}</span></a>
+			</div>
+			<div class="card-caption">
+				{{{caption}}}
+				<div class="card-tags">{{{tags}}}</tags>
 			</div>
 		</div>
 	</div>
 
 </script>
 
+<script id="embed-tumblr-photo" type="text/x-handlers-template">
+	<div class="embed-tumblr-{{type}}"> 
+		<a href="{{link}}" target="_blank" title="{{slug}} {{date}}">
+			<img src="{{photo.url}}" alt="{{slug}}" width="{{photo.width}}" height="{{photo.height}}" />
+		</a>
+	</div> 
+</script>
+
+<script id="embed-tumblr-link" type="text/x-handlers-template">
+	<div class="embed-tumblr-{{type}}"> 
+		<a href="{{link}}" target="_blank" title="{{slug}} {{date}}">
+
+			{{#if link_image}}
+				<img src="{{link_image}}" width="300" alt="{{title}}" />
+
+			{{else}}
+				<div class="card-link-title">{{title}}</div>
+			{{/if}}
+		</a>
+	</div> 
+</script>
+
+<script id="embed-tumblr-video" type="text/x-handlers-template">
+	<div class="embed-tumblr-{{type}}">
+		<iframe src="http://www.tumblr.com/video/{{blog_name}}/{{id}}/300" width="300" height="225" style="display:block;background-color:transparent;overflow:hidden;" allowTransparency="true" frameborder="0" scrolling="no" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+	</div>
+</script>
+<script id="embed-tumblr-text" type="text/x-handlers-template">
+	<div class="embed-tumblr-{{type}}">
+		<a class="tumblr-text-link" href="{{link}}" target="_blank" title="{{slug}} {{date}}">
+			<div class="tumblr-shim">&nbsp;</div>
+			<div class="tumblr-text-embedded">
+				{{#if title}}
+					<h2>{{title}}</h2>
+				{{/if}}
+				{{{body}}}
+			</div>
+		</a>
+	</div>
+</script>
+
+<script id="embed-tumblr-audio" type="text/x-handlers-template">
+	<div class="embed-tumblr-{{type}}">
+		<div class="tumblr-audio-image">
+			{{#if album_art}}
+				<a href="{{link}}" target="_blank" title="Listen at Tumblr. {{slug}} {{date}}"><img src="{{album_art}}" width="75" height="75" alt="{{slug}}" /></a>
+			{{/if}}
+		</div>
+		<div class="tumblr-imported-embed">
+			{{{player}}}
+		</div>
+		<br style="clear:both" />
+	</div>
+</script>
 </body>
 </html>
