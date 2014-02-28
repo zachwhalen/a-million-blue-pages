@@ -122,7 +122,8 @@
 		
 				// load statistics
 				$("#statistics").html("<span class='stat' id='total-nodes'><strong class='house'>"+ totalNodes + "</strong> total nodes,</span>\n" + 
-										"<span class='stat' id='pages-covered'> covering <strong class='house'>"+ pageCounter + "</strong> pages. </span><br />");
+										"<span class='stat' id='pages-covered'> covering <strong class='house'>"+ pageCounter + "</strong> pages. </span><br />\n" + 
+										"<span class='stat' id='pages-left'><strong class='house'>" + (742 - pageCounter) + "</strong> pages left to cover. </span>");
 				
 			
 			}
@@ -146,10 +147,10 @@
 			//var node = makeNode(data.cells);
 			data.cells.imgthumb = false; // for non image thumbs like tweets etc which will be generically deployed from CSS
 			var imgthumbs = ["photo","video","image"];
-						    
-			//if (imgthumbs.indexOf(data.cells.type) > -1){
-			if ($.inArray(data.cells.type, imgthumbs) > -1){
-						    data.cells.imgthumb = true;
+
+			if (imgthumbs.indexOf(data.cells.type) > -1){
+		        
+				data.cells.imgthumb = true;
 			}
 
 			data.cells.tags = data.cells.tags.replace(/ /,"-").replace(/,/g," "); 
@@ -160,9 +161,8 @@
 
 				if (thesetags[t] != 'hol14'){
 					if (!thesetags[t].match(/^p[0-9xiv]+/) ){
-						//if (alltags.indexOf(thesetags[t]) == -1){
-					    if ($.inArray(thesetags[t], alltags) == -1){
-					    alltags.push(thesetags[t]); 
+						if (alltags.indexOf(thesetags[t]) == -1){
+							alltags.push(thesetags[t]); 
 							numbers.tag[thesetags[t]] = 1;
 						}else{
 							numbers.tag[thesetags[t]] += 1;
@@ -171,14 +171,14 @@
 				}
 			}
 			
-			if ($.inArray(data.cells.source, allsources) < 0){
+			if (allsources.indexOf(data.cells.source) < 0){
 				allsources.push(data.cells.source);
 				numbers.source[data.cells.source] = 1;
 			}else{
 				numbers.source[data.cells.source] += 1;
 
 			}
-			if ($.inArray(data.cells.type, alltypes) < 0){
+			if (alltypes.indexOf(data.cells.type) < 0){
 				alltypes.push(data.cells.type);
 				numbers.type[data.cells.type] = 1;
 			}else{

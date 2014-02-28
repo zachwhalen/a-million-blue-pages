@@ -261,10 +261,10 @@
 		<div id="tableedge">
 			&nbsp;
 		</div>
-	</div>
+	
 	
 	 
-	<!--    
+	  
 	
 	<div id="disqus_thread"></div>
     <script type="text/javascript">
@@ -281,7 +281,7 @@
     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a> 
 
-	-->
+	</div>
 
     
  </div>
@@ -379,11 +379,11 @@
 </script>
 <script id="embed-tumblr-text" type="text/x-handlers-template">
 	<div class="embed-tumblr-{{type}}">
-		<a class="tumblr-text-link" href="{{link}}" target="_blank" title="{{slug}} {{date}}">
+		<a class="tumblr-text-link" href="{{{link}}}" target="_blank" title="{{slug}} {{date}}">
 			<div class="tumblr-shim">&nbsp;</div>
 			<div class="tumblr-text-embedded">
 				{{#if title}}
-					<h2>{{title}}</h2>
+					<h2>{{{title}}}</h2>
 				{{/if}}
 				{{{body}}}
 			</div>

@@ -69,6 +69,7 @@ h1, h2, h3 {
 .pg-node img {
     width:20px;
     height:20px;
+    border: none;
 }
 
 .pg-node .no-image {
@@ -576,6 +577,16 @@ a.tumblr-text-link:hover{
 	float:right;
 }
 
+.pg-label a:hover {
+	color: #5080d8;
+	
+	
+	text-decoration: none;
+}
+.pg-label a{
+	text-decoration: none;
+	color: #bbb;
+}	
 
 
 
