@@ -1,7 +1,32 @@
 <html>
 <head>
 	<link rel="icon" type="image/ico" href="favicon.ico"/>
+
 	<title>A Million Blue Pages</title>
+	<script type="text/javascript">
+	  /** http://stackoverflow.com/a/13817235
+ * Protect window.console method calls, e.g. console is not defined on IE
+ * unless dev tools are open, and IE doesn't define console.debug
+ */
+(function() {
+  if (!window.console) {
+    window.console = {};
+  }
+  // union of Chrome, FF, IE, and Safari console methods
+  var m = [
+    "log", "info", "warn", "error", "debug", "trace", "dir", "group",
+    "groupCollapsed", "groupEnd", "time", "timeEnd", "profile", "profileEnd",
+    "dirxml", "assert", "count", "markTimeline", "timeStamp", "clear"
+  ];
+  // define undefined methods as noops to prevent errors
+  for (var i = 0; i < m.length; i++) {
+    if (!window.console[m[i]]) {
+      window.console[m[i]] = function() {};
+    }    
+  } 
+})();
+	  </script>
+
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800,700|Goudy+Bookletter+1911' rel='stylesheet' type='text/css'>
@@ -69,6 +94,7 @@
 			
 
 			// Go get the data from SS
+		 try {
 			$('#nu').sheetrock({
 	  			url: 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dEhQVENrb1I2SllPa19ZSjVtMWtNVEE&usp=drive_web#gid=0',
 	  			sql: 'select A,B,C,D,E,F,G,H,I,J,K,L,M,N,O where P != "skip"', // don't need L, actually
@@ -76,7 +102,10 @@
 				rowHandler: pageRows,
 				userCallback : keepDoingStuff		
 			});
-
+		}
+		catch (err){
+		console.log("There was an error loading the data: " + err);
+		}
 			function keepDoingStuff(){
 				
 	
@@ -121,8 +150,8 @@
 		
 		
 				// load statistics
-				$("#statistics").html("<span class='stat' id='total-nodes'><strong class='house'>"+ totalNodes + "</strong> total nodes,</span>\n" + 
-										"<span class='stat' id='pages-covered'> covering <strong class='house'>"+ pageCounter + "</strong> pages. </span><br />");
+				$("#statistics").html("<span class='stat' id='total-nodes'>Tracking <strong class='house'>"+ totalNodes + "</strong> total nodes</span>\n" + 
+										"<span class='stat' id='pages-covered'> <strong class='house'>"+  "</strong> </span><br />");
 				
 			
 			}

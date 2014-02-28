@@ -24,13 +24,13 @@
 			'start' : '5',
 			'end' : '7',
 			'what' : 'ENGL 428: 21st Century Fiction',
-			'confidence' : 'yes',
+			'confidence' : 'yes'
 		},
 		{
 		    'who' : 'Steven Lemieux',
 			'where' : 'University of Texas at Austin',
-			'start' : '5',
-			'end' : '8',
+			'start' : '7',
+			'end' : '11',
 			'what' : '',
 			'confidence' : 'yes'
 		},
@@ -69,7 +69,7 @@
 		},
 		{
 			'who' : 'Jeremy Douglass', 
-			'where' : 'University of Wisconsin Green Bay',
+			'where' : 'University of California Santa Barbara',
 			'start' : '14',
 			'end' : '20',
 			'confidence' : 'yes',
@@ -79,25 +79,28 @@
 
 	for (var g = 0; g < teachGrid.length; g++){
 		var teach = teachGrid[g];
-		var row = new Array();
-		row[0] = '<td class="teacher"><span class="who">' + teach.who + '</span><span class="what">';
+		row = '';
+		row = '<td class="teacher"><span class="who">' + teach.who + '</span><span class="what">';
 		if (teach.web){
-			row[0] += '<a href="'+teach.web+'">'+teach.what+'</a></span>';
+			row += '<a href="'+teach.web+'">'+teach.what+'</a></span>';
 		}else{
-			row[0] += teach.what + '</span>';
+			row += teach.what + '</span>';
 		}
 
-		row[0] += '<span class="where">' + teach.where + '</span></td>';
+		row += '<span class="where">' + teach.where + '</span></td>';
 		for (var c = 1; c <= 20; c++){
-			row[c] += '<td class="';
+			
+		        var classes = '';
 			if (c >= teach.start && c <= teach.end){
-				row[c] += 'on ';
-				row[c] += teach.confidence;
+				classes = 'on yes';
 
 			}
-			row[c] += '">&nbsp;</td>';
-		}
-		row[20] += '</tr>';
+			row += '<td class="' + classes + '"> </td>';
+						     console.log(row[c]);
+						     console.log(c);
+						     console.log(row);
+						     }
+		//row[20] += '</tr>';
 
 		$('.teach table').append('<tr>'+row+'</tr>');
 	}
