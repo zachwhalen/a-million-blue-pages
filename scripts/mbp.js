@@ -249,6 +249,7 @@ function findPrevious(raw,pagesList){
 }
 
 function filterBus() {
+	console.log("filterbus");
 	// a generalized filtering function
 	// could take an argument from URL, otherwise, runs on each click.
 	// Therefore, each click should also update URL with its parameters.

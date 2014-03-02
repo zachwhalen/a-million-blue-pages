@@ -588,6 +588,48 @@ a.tumblr-text-link:hover{
 	color: #bbb;
 }	
 
+#tag-filters label {
+	display: none;
+}
+#tag-filters label.featured {
+	display: block;
+}
 
+/** autocomplete tweaks */
 
+.ui-helper-hidden-accessible {
+	display: none;
+}
 
+#moreTags {
+background-color: transparent;
+	border: 1px solid #555;
+	color:white;
+	padding: 4px;
+	width: 193px;
+}
+
+li.ui-menu-item {
+	list-style-type: none;
+	width: 190px;
+	padding: 3px;
+	
+}
+li.ui-menu-item:hover {
+cursor: hand;
+	background-color: #555;
+}
+li.ui-menu-item a:hover {
+	cursor: hand;
+	background-color: #555;
+}
+
+ul.ui-autocomplete {
+	background-color: #333;
+	
+	padding:0;
+	width: 193px;
+}
+#moretags-widget {
+	margin-left: 196px;
+}

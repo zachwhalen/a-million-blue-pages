@@ -1,15 +1,34 @@
 <html>
 <head>
 	<link rel="icon" type="image/ico" href="favicon.ico"/>
+
 	<title>A Million Blue Pages</title>
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800,700|Goudy+Bookletter+1911' rel='stylesheet' type='text/css'>
-		<script src="scripts/jquery.cookie.js"></script>
-		<script src="scripts/jquery.sheetrock.js"></script>
-		<script src="scripts/handlebars-v1.1.2.js"></script>
-		<script src="scripts/mbp.js"></script>
-		<link rel="stylesheet" type="text/css" href="style.css" />
+	<script type="text/javascript">
+	  /** http://stackoverflow.com/a/13817235
+		 * Protect window.console method calls, e.g. console is not defined on IE
+		 * unless dev tools are open, and IE doesn't define console.debug
+		 */
+		(function() {
+		  if (!window.console) {
+			window.console = {};
+		  }
+		  // union of Chrome, FF, IE, and Safari console methods
+		  var m = [
+			"log", "info", "warn", "error", "debug", "trace", "dir", "group",
+			"groupCollapsed", "groupEnd", "time", "timeEnd", "profile", "profileEnd",
+			"dirxml", "assert", "count", "markTimeline", "timeStamp", "clear"
+		  ];
+		  // define undefined methods as noops to prevent errors
+		  for (var i = 0; i < m.length; i++) {
+			if (!window.console[m[i]]) {
+			  window.console[m[i]] = function() {};
+			}    
+		  } 
+		})();
+	</script>
+
+	<!--#include virtual="inc/head.html" -->
+	
 	<script type="text/javascript">
 
 		pageCounter = 0;
@@ -69,30 +88,44 @@
 			
 
 			// Go get the data from SS
-			$('#nu').sheetrock({
-	  			url: 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dEhQVENrb1I2SllPa19ZSjVtMWtNVEE&usp=drive_web#gid=0',
-	  			sql: 'select A,B,C,D,E,F,G,H,I,J,K,L,M,N,O where P != "skip"', // don't need L, actually
-	  			headersOff: true,
-				rowHandler: pageRows,
-				userCallback : keepDoingStuff		
-			});
+			// this try/catch isn't working for some reason.
+			 try {
+				$('#nu').sheetrock({
+					url: 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dEhQVENrb1I2SllPa19ZSjVtMWtNVEE&usp=drive_web#gid=0',
+					sql: 'select A,B,C,D,G,H where P != "skip"', // don't need everything
 
+					headersOff: true,
+					rowHandler: pageRows,
+					userCallback : keepDoingStuff		
+				});
+			}
+			catch (err){
+				console.log("There was an error loading the data: " + err);
+			}
+			
 			function keepDoingStuff(){
 				
+				$("#moreTags").autocomplete({
+				  source: alltags,
+				  select: function (event, ui) {
+					var selectedTag = ui.item.value;
+					console.log("selected " + selectedTag);
+					$("label[for='filter-tag-"+selectedTag+"']").css({"display":"block"}).find("input#filter-tag-"+selectedTag).prop('checked',true);
+					filterBus();
+				  }
+				});
 	
 				// add tag filter checkboxes
-				var featuredTags = ["engl451","engl428"];
-				var excludeTags = ["houseofleaves","house-of","leaves","hol14"];
+				var featuredTags = ["engl451","eng428", "remix"];
+				
 				
 	
 				for (var t = 0; t < alltags.length; t++){
 					var isFeatured = '';
-					if ($.inArray(alltags[t], excludeTags) == -1){
 						if ($.inArray(alltags[t], featuredTags) > -1){
 							isFeatured = "featured";
 						}
 						$("#tag-filters").append('<label class="filter-tag tag '+ isFeatured + '" for="filter-tag-' + alltags[t] + '"><input type="checkbox" name="filter-tag-' + alltags[t] + '" id="filter-tag-' + alltags[t] + '" class="filter" />#' + alltags[t] + '	<span class="counter">[' + numbers.tag[alltags[t]] + ']</span></label>');
-					}
 				}
 				
 				
@@ -121,77 +154,11 @@
 		
 		
 				// load statistics
-				$("#statistics").html("<span class='stat' id='total-nodes'><strong class='house'>"+ totalNodes + "</strong> total nodes,</span>\n" + 
-										"<span class='stat' id='pages-covered'> covering <strong class='house'>"+ pageCounter + "</strong> pages. </span><br />\n" + 
-										"<span class='stat' id='pages-left'><strong class='house'>" + (742 - pageCounter) + "</strong> pages left to cover. </span>");
-				
-			
-			}
-
-
-
-
-
-		});
-
-		
-		
-		
-		// parse data by appending its thumbnail into the appropriate page DIV
-		function pageRows(data) {
-			
-			totalNodes++;
-			//console.log(data);
-
-			var pg = data.cells.page;
-			//var node = makeNode(data.cells);
-			data.cells.imgthumb = false; // for non image thumbs like tweets etc which will be generically deployed from CSS
-			var imgthumbs = ["photo","video","image"];
-						    
-			//if (imgthumbs.indexOf(data.cells.type) > -1){
-			if ($.inArray(data.cells.type, imgthumbs) > -1){
-						    data.cells.imgthumb = true;
-			}
-
-			data.cells.tags = data.cells.tags.replace(/ /,"-").replace(/,/g," "); 
-
-			var thesetags = data.cells.tags.split(" ");
-
-			for (var t = 0; t < thesetags.length; t++){	
-
-				if (thesetags[t] != 'hol14'){
-					if (!thesetags[t].match(/^p[0-9xiv]+/) ){
-						//if (alltags.indexOf(thesetags[t]) == -1){
-					    if ($.inArray(thesetags[t], alltags) == -1){
-					    alltags.push(thesetags[t]); 
-							numbers.tag[thesetags[t]] = 1;
-						}else{
-							numbers.tag[thesetags[t]] += 1;
-						}
-					}
-				}
-			}
-			
-			if ($.inArray(data.cells.source, allsources) < 0){
-				allsources.push(data.cells.source);
-				numbers.source[data.cells.source] = 1;
-			}else{
-				numbers.source[data.cells.source] += 1;
+				$("#statistics").html("<span class='stat' id='total-nodes'>Tracking <strong class='house'>"+ totalNodes + "</strong> content nodes</span>\n" + 
+										"<span class='stat' id='pages-covered'> <strong class='house'>"+  "</strong> </span><br />");
 
 			}
-			if ($.inArray(data.cells.type, alltypes) < 0){
-				alltypes.push(data.cells.type);
-				numbers.type[data.cells.type] = 1;
-			}else{
-				numbers.type[data.cells.type] += 1;
-			}
-
-			$("#p"+pg.toUpperCase()).append( template(data.cells) );
-			$("#p"+pg.toUpperCase()+" .pg-label").html("<a href=\"/page.shtml?page="+pg+"\" title=\"View all items for this page\">"+pg+"</a>");
-		}
-
-		
-		
+	});
 
 
 	</script>
@@ -225,7 +192,7 @@
 						<input type="checkbox" name="hide-filter" id="hide-filter" class="filter" />
 						Use Filters
 					</label>
-
+				
 					
 						<label for="thumb-small">
 						<input type="radio" name="thumbsize" id="thumb-small" value="small" />Small</label>
@@ -250,8 +217,12 @@
 				
 				<div id="tag-filters" class="pg">
 					<div class="pg-label"><span title="Restrict by tags">tags</span></div>
-						
+					
 				</div>
+				<div class="ui-widget" id="moretags-widget">
+					  <label for="tags">More tags: </label>
+					  <input id="moreTags">
+					</div>	
 				<div style="position:relative; margin-left:110px;">
 					<div class="pg-label">&nbsp;</div>
 					<div class="button">

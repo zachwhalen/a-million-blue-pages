@@ -63,6 +63,8 @@
 		
 		clicked = false;
 		
+		
+		
 		$(document).ready(function (){ 
 
 
@@ -149,15 +151,9 @@
 				// load statistics
 				$("#statistics").html("<span class='stat' id='total-nodes'>Tracking <strong class='house'>"+ totalNodes + "</strong> total nodes</span>\n" + 
 										"<span class='stat' id='pages-covered'> <strong class='house'>"+  "</strong> </span><br />");
-				
-			
+
 			}
-
-
-
-
-
-		});
+	});
 
 
 	</script>
