@@ -63,8 +63,6 @@
 		
 		clicked = false;
 		
-		
-		
 		$(document).ready(function (){ 
 
 
@@ -107,20 +105,27 @@
 			
 			function keepDoingStuff(){
 				
+				$("#moreTags").autocomplete({
+				  source: alltags,
+				  select: function (event, ui) {
+					var selectedTag = ui.item.value;
+					console.log("selected " + selectedTag);
+					$("label[for='filter-tag-"+selectedTag+"']").css({"display":"block"}).find("input#filter-tag-"+selectedTag).prop('checked',true);
+					filterBus();
+				  }
+				});
 	
 				// add tag filter checkboxes
-				var featuredTags = ["engl451","engl428"];
-				var excludeTags = ["houseofleaves","house-of","leaves","hol14"];
+				var featuredTags = ["engl451","eng428", "remix"];
+				
 				
 	
 				for (var t = 0; t < alltags.length; t++){
 					var isFeatured = '';
-					if ($.inArray(alltags[t], excludeTags) == -1){
 						if ($.inArray(alltags[t], featuredTags) > -1){
 							isFeatured = "featured";
 						}
 						$("#tag-filters").append('<label class="filter-tag tag '+ isFeatured + '" for="filter-tag-' + alltags[t] + '"><input type="checkbox" name="filter-tag-' + alltags[t] + '" id="filter-tag-' + alltags[t] + '" class="filter" />#' + alltags[t] + '	<span class="counter">[' + numbers.tag[alltags[t]] + ']</span></label>');
-					}
 				}
 				
 				
@@ -149,7 +154,7 @@
 		
 		
 				// load statistics
-				$("#statistics").html("<span class='stat' id='total-nodes'>Tracking <strong class='house'>"+ totalNodes + "</strong> total nodes</span>\n" + 
+				$("#statistics").html("<span class='stat' id='total-nodes'>Tracking <strong class='house'>"+ totalNodes + "</strong> content nodes</span>\n" + 
 										"<span class='stat' id='pages-covered'> <strong class='house'>"+  "</strong> </span><br />");
 
 			}
@@ -187,7 +192,7 @@
 						<input type="checkbox" name="hide-filter" id="hide-filter" class="filter" />
 						Use Filters
 					</label>
-
+				
 					
 						<label for="thumb-small">
 						<input type="radio" name="thumbsize" id="thumb-small" value="small" />Small</label>
@@ -212,8 +217,12 @@
 				
 				<div id="tag-filters" class="pg">
 					<div class="pg-label"><span title="Restrict by tags">tags</span></div>
-						
+					
 				</div>
+				<div class="ui-widget" id="moretags-widget">
+					  <label for="tags">More tags: </label>
+					  <input id="moreTags">
+					</div>	
 				<div style="position:relative; margin-left:110px;">
 					<div class="pg-label">&nbsp;</div>
 					<div class="button">
