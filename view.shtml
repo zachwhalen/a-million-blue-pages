@@ -97,8 +97,9 @@
 		 try {
 			$('#nu').sheetrock({
 	  			url: 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dEhQVENrb1I2SllPa19ZSjVtMWtNVEE&usp=drive_web#gid=0',
-	  			sql: 'select A,B,C,D,E,F,G,H,I,J,K,L,M,N,O where P != "skip"', // don't need L, actually
-	  			headersOff: true,
+				sql: 'select A,B,C,D,G,H where P != "skip"', // don't need everything
+
+				headersOff: true,
 				rowHandler: pageRows,
 				userCallback : keepDoingStuff		
 			});
