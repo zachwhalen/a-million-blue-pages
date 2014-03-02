@@ -5,36 +5,30 @@
 	<title>A Million Blue Pages</title>
 	<script type="text/javascript">
 	  /** http://stackoverflow.com/a/13817235
- * Protect window.console method calls, e.g. console is not defined on IE
- * unless dev tools are open, and IE doesn't define console.debug
- */
-(function() {
-  if (!window.console) {
-    window.console = {};
-  }
-  // union of Chrome, FF, IE, and Safari console methods
-  var m = [
-    "log", "info", "warn", "error", "debug", "trace", "dir", "group",
-    "groupCollapsed", "groupEnd", "time", "timeEnd", "profile", "profileEnd",
-    "dirxml", "assert", "count", "markTimeline", "timeStamp", "clear"
-  ];
-  // define undefined methods as noops to prevent errors
-  for (var i = 0; i < m.length; i++) {
-    if (!window.console[m[i]]) {
-      window.console[m[i]] = function() {};
-    }    
-  } 
-})();
-	  </script>
+		 * Protect window.console method calls, e.g. console is not defined on IE
+		 * unless dev tools are open, and IE doesn't define console.debug
+		 */
+		(function() {
+		  if (!window.console) {
+			window.console = {};
+		  }
+		  // union of Chrome, FF, IE, and Safari console methods
+		  var m = [
+			"log", "info", "warn", "error", "debug", "trace", "dir", "group",
+			"groupCollapsed", "groupEnd", "time", "timeEnd", "profile", "profileEnd",
+			"dirxml", "assert", "count", "markTimeline", "timeStamp", "clear"
+		  ];
+		  // define undefined methods as noops to prevent errors
+		  for (var i = 0; i < m.length; i++) {
+			if (!window.console[m[i]]) {
+			  window.console[m[i]] = function() {};
+			}    
+		  } 
+		})();
+	</script>
 
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800,700|Goudy+Bookletter+1911' rel='stylesheet' type='text/css'>
-		<script src="scripts/jquery.cookie.js"></script>
-		<script src="scripts/jquery.sheetrock.js"></script>
-		<script src="scripts/handlebars-v1.1.2.js"></script>
-		<script src="scripts/mbp.js"></script>
-		<link rel="stylesheet" type="text/css" href="style.css" />
+	<!--#include virtual="inc/head.html" -->
+	
 	<script type="text/javascript">
 
 		pageCounter = 0;
@@ -94,19 +88,21 @@
 			
 
 			// Go get the data from SS
-		 try {
-			$('#nu').sheetrock({
-	  			url: 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dEhQVENrb1I2SllPa19ZSjVtMWtNVEE&usp=drive_web#gid=0',
-				sql: 'select A,B,C,D,G,H where P != "skip"', // don't need everything
+			// this try/catch isn't working for some reason.
+			 try {
+				$('#nu').sheetrock({
+					url: 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dEhQVENrb1I2SllPa19ZSjVtMWtNVEE&usp=drive_web#gid=0',
+					sql: 'select A,B,C,D,G,H where P != "skip"', // don't need everything
 
-				headersOff: true,
-				rowHandler: pageRows,
-				userCallback : keepDoingStuff		
-			});
-		}
-		catch (err){
-		console.log("There was an error loading the data: " + err);
-		}
+					headersOff: true,
+					rowHandler: pageRows,
+					userCallback : keepDoingStuff		
+				});
+			}
+			catch (err){
+				console.log("There was an error loading the data: " + err);
+			}
+			
 			function keepDoingStuff(){
 				
 	
@@ -162,65 +158,6 @@
 
 
 		});
-
-		
-		
-		
-		// parse data by appending its thumbnail into the appropriate page DIV
-		function pageRows(data) {
-			
-			totalNodes++;
-			//console.log(data);
-
-			var pg = data.cells.page;
-			//var node = makeNode(data.cells);
-			data.cells.imgthumb = false; // for non image thumbs like tweets etc which will be generically deployed from CSS
-			var imgthumbs = ["photo","video","image"];
-						    
-			//if (imgthumbs.indexOf(data.cells.type) > -1){
-			if ($.inArray(data.cells.type, imgthumbs) > -1){
-						    data.cells.imgthumb = true;
-			}
-
-			data.cells.tags = data.cells.tags.replace(/ /,"-").replace(/,/g," "); 
-
-			var thesetags = data.cells.tags.split(" ");
-
-			for (var t = 0; t < thesetags.length; t++){	
-
-				if (thesetags[t] != 'hol14'){
-					if (!thesetags[t].match(/^p[0-9xiv]+/) ){
-						//if (alltags.indexOf(thesetags[t]) == -1){
-					    if ($.inArray(thesetags[t], alltags) == -1){
-					    alltags.push(thesetags[t]); 
-							numbers.tag[thesetags[t]] = 1;
-						}else{
-							numbers.tag[thesetags[t]] += 1;
-						}
-					}
-				}
-			}
-			
-			if ($.inArray(data.cells.source, allsources) < 0){
-				allsources.push(data.cells.source);
-				numbers.source[data.cells.source] = 1;
-			}else{
-				numbers.source[data.cells.source] += 1;
-
-			}
-			if ($.inArray(data.cells.type, alltypes) < 0){
-				alltypes.push(data.cells.type);
-				numbers.type[data.cells.type] = 1;
-			}else{
-				numbers.type[data.cells.type] += 1;
-			}
-
-			$("#p"+pg.toUpperCase()).append( template(data.cells) );
-			$("#p"+pg.toUpperCase()+" .pg-label").html("<a href=\"/page.shtml?page="+pg+"\" title=\"View all items for this page\">"+pg+"</a>");
-		}
-
-		
-		
 
 
 	</script>

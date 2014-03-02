@@ -1,3 +1,55 @@
+function pageRows(data) {
+		
+		totalNodes++;
+		//console.log(data);
+
+		var pg = data.cells.page;
+		//var node = makeNode(data.cells);
+		data.cells.imgthumb = false; // for non image thumbs like tweets etc which will be generically deployed from CSS
+		var imgthumbs = ["photo","video","image"];
+						
+		//if (imgthumbs.indexOf(data.cells.type) > -1){
+		if ($.inArray(data.cells.type, imgthumbs) > -1){
+						data.cells.imgthumb = true;
+		}
+
+		data.cells.tags = data.cells.tags.replace(/ /,"-").replace(/,/g," "); 
+
+		var thesetags = data.cells.tags.split(" ");
+
+		for (var t = 0; t < thesetags.length; t++){	
+
+			if (thesetags[t] != 'hol14'){
+				if (!thesetags[t].match(/^p[0-9xiv]+/) ){
+					//if (alltags.indexOf(thesetags[t]) == -1){
+					if ($.inArray(thesetags[t], alltags) == -1){
+					alltags.push(thesetags[t]); 
+						numbers.tag[thesetags[t]] = 1;
+					}else{
+						numbers.tag[thesetags[t]] += 1;
+					}
+				}
+			}
+		}
+		
+		if ($.inArray(data.cells.source, allsources) < 0){
+			allsources.push(data.cells.source);
+			numbers.source[data.cells.source] = 1;
+		}else{
+			numbers.source[data.cells.source] += 1;
+
+		}
+		if ($.inArray(data.cells.type, alltypes) < 0){
+			alltypes.push(data.cells.type);
+			numbers.type[data.cells.type] = 1;
+		}else{
+			numbers.type[data.cells.type] += 1;
+		}
+
+		$("#p"+pg.toUpperCase()).append( template(data.cells) );
+		$("#p"+pg.toUpperCase()+" .pg-label").html("<a href=\"/page.shtml?page="+pg+"\" title=\"View all items for this page\">"+pg+"</a>");
+	}
+
 extraLabels = {
 				'XI' : 'Introduction',
 				'V' : 'Contents',

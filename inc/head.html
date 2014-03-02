@@ -1,18 +1,20 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge">	
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800,700|Goudy+Bookletter+1911' rel='stylesheet' type='text/css'>
-<link rel="icon" type="image/ico" href="favicon.ico"/>
-<script src="scripts/jquery.cookie.js"></script>
-<script src="scripts/jquery.sheetrock.js"></script>
-<script src="scripts/mbp.js"></script>
-		
-<link rel="stylesheet" type="text/css" href="style.css" />
+	<link rel="icon" type="image/ico" href="favicon.ico"/>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800,700|Goudy+Bookletter+1911' rel='stylesheet' type='text/css'>
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+	<script src="scripts/jquery.sheetrock.js"></script>
+	<script src="scripts/handlebars-v1.1.2.js"></script>
+	<script src="scripts/mbp.js"></script>
+			
+	<link rel="stylesheet" type="text/css" href="style.css" />
 
-<script type="text/javascript">
+	<script type="text/javascript">
 
-	curr = window.location.pathname.split('/').pop().split('.');
+		curr = window.location.pathname.split('/').pop().split('.');
 
-	$(document).ready(function() {
-		$('nav li a[href="/'+curr[0]+'\.shtml"]').addClass("current");
-	});
-</script>
+		$(document).ready(function() {
+			$('nav li a[href="/'+curr[0]+'\.shtml"]').addClass("current");
+		});
+	</script>
