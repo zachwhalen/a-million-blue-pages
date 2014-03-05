@@ -42,7 +42,7 @@
 		
 		
 		<li>add classes and assignment links to teaching page</li>
-		<li>Get control of the tags in filter bus, set some to be featured, hide others</li>
+		<li><strike>Get control of the tags in filter bus, set some to be featured, hide others</strike></li>
 		
 		<li>Make it look better</li>
 		<li>Add statistics</li>
@@ -51,7 +51,8 @@
 		<li>something weird in embedded text posts</li>
 		<li>Add embed for quotes</li>
 		<li>Add embed for chat</li>
-		<li>Add some way pull in quotes from elsewhere or scrape for older things.</li>
+		<li>Add some way pull in nodes from elsewhere or scrape for older things.</li>
+		<li>Fix tumblr video embed for non-hosted</li>
 		<li>
 	</ul>
 	<!--#include virtual="inc/footer.html" -->

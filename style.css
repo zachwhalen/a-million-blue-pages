@@ -531,6 +531,10 @@ font-family: 'Open Sans';
 .card.twitter {
     background-color: #0084b4;
 }
+
+.card.vine {
+background-color: #00bf8f;
+}
 .embed-tumblr-link a {
     display: block;
     text-decoration: none;
@@ -616,7 +620,7 @@ li.ui-menu-item {
 	
 }
 li.ui-menu-item:hover {
-cursor: hand;
+cursor: hand; 
 	background-color: #555;
 }
 li.ui-menu-item a:hover {
@@ -633,3 +637,29 @@ ul.ui-autocomplete {
 #moretags-widget {
 	margin-left: 196px;
 }
+
+body div.view {
+	background: transparent url(img/johnny.jpg) bottom right no-repeat;
+}
+
+.card.vine .card-head {
+	background: transparent url(img/logos/vine.png) top right no-repeat;
+	height: 40px;
+}
+
+.card.tumblr .card-head {
+	background: transparent url(img/logos/tumblr.png) top right no-repeat;
+	height: 40px;
+}
+
+.card.instagram .card-head {
+	background: transparent url(img/logos/instagram.png) top right no-repeat;
+	height: 40px;
+}
+.card.twitter .card-head {
+	background: transparent url(img/logos/twitter.png) top right no-repeat;
+	height: 40px;
+}
+
+
+

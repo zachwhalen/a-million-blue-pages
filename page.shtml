@@ -163,37 +163,39 @@
 
 			case "text":
 				// text-specific embed code
-				obj.body = data.body;
+				obj.body = data.body.replace(/<a (.+?)>/g, '').replace(/<\/a>/g,'');
 				template = Handlebars.compile($("#embed-tumblr-text").html());
 				obj.embed = template(obj);
+				
 				break;
 				
 			case "link":
 				obj.link_image;
 				template = Handlebars.compile($("#embed-tumblr-link").html());
 				//console.log(obj);
-				obj.embed = template(obj);
+				template(obj);
 				obj.caption = data.description;
 				break;
 			
 			case "video":
 				obj.id = data.id;
 				obj.blog_name = data.blog_name;
-				template = Handlebars.compile($("#embed-tumblr-video").html());
-				obj.embed = template(obj);
+				//template = Handlebars.compile($("#embed-tumblr-video").html());
+				obj.embed = data.player[1].embed_code.replace(/400"/g, '300"');
+				
+				//obj.embed = template(obj);
 				break;
 			
 			case "audio":
-				//if (data.embed){
-				//	obj.embed = data.embed.replace("width=\"500\"", "width=\"300\"");
-				//}
-				if (data.player){
+
+				if (data.is_external == true){
+					obj.embed = data.embed.replace(/width=\"500\"/g, "width=\"300\"").replace(/height=\"500\"/g, "height=\"300\"");
+				}else{
 					obj.player = data.player;
+					obj.album_art = data.album_art;
+					template = Handlebars.compile($("#embed-tumblr-audio").html());
+					obj.embed = template(obj);
 				}
-				obj.album_art = data.album_art;
-				
-				template = Handlebars.compile($("#embed-tumblr-audio").html());
-				obj.embed = template(obj);
 		}
 
 		for (var t = 0; t < data.tags.length; t++){
@@ -295,7 +297,7 @@
 			<div class="card-head"><span class="source-legend">&nbsp;</span></div>
 			
 			<div class="card-content">
-				<iframe src="{{link}}embed/" width="300" height="364" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
+				<iframe src="{{link}}embed/" width="310" height="364" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
 			</div>
 		</div>
 	</div>
@@ -322,7 +324,7 @@
 		<div class="container">
 			<div class="card-head"><span class="source-legend">&nbsp;</span></div>
 			<div class="card-content">
-				<iframe class="vine-embed" src="{{link}}/embed/postcard" width="300" height="300" frameborder="0"></iframe><script async src="//platform.vine.co/static/scripts/embed.js" charset="utf-8"></script>
+				<iframe class="vine-embed" src="{{link}}/embed/postcard" width="310" height="310" frameborder="0"></iframe><script async src="//platform.vine.co/static/scripts/embed.js" charset="utf-8"></script>
 				
 			</div>
 		</div>
@@ -377,6 +379,7 @@
 		<iframe src="http://www.tumblr.com/video/{{blog_name}}/{{id}}/300" width="300" height="225" style="display:block;background-color:transparent;overflow:hidden;" allowTransparency="true" frameborder="0" scrolling="no" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 	</div>
 </script>
+
 <script id="embed-tumblr-text" type="text/x-handlers-template">
 	<div class="embed-tumblr-{{type}}">
 		<a class="tumblr-text-link" href="{{{link}}}" target="_blank" title="{{slug}} {{date}}">
@@ -384,7 +387,7 @@
 			<div class="tumblr-text-embedded">
 				{{#if title}}
 					<h2>{{{title}}}</h2>
-				{{/if}}
+				{{/if}}	
 				{{{body}}}
 			</div>
 		</a>
