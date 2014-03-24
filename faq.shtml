@@ -25,7 +25,10 @@
 	<h1>Some questions and some answers</h1>
 
 	<div id="faqs">
-
+		<h3>I just see empty pages and blank content. Is there anything here?</h3>
+		<div>
+			<p>Yes! There is content here. Much, much content. If you're seeing an empty page, that's a bug. One likely cause of this bug is a result of stale Google authentication credentials, so you can clear it by either re-authenticating with Google (refresh Gmail, for example), or logging out of Google completely. To clarify: you do not need a Google account to access the pages here, but we use Google to store some data in the background. If you have a google account that's logged in but inactive, Google wants you to reauthenticate that session, and their request to reauthenticate interrupts the API request that we need in order to load content. It's an annoying bug, but easy enough to resolve, hopefully. If reauthenticating doesn't correct the site's behavior, please <a href="https://github.com/zachwhalen/a-million-blue-pages/issues">let us know</a>.
+		</div>
 		<h3>How do I add content?</h3>
 		<div>
 			<p>There's a <a href="contribute.shtml">whole page</a> dedicated to that question, but it should be pretty easy: make something that relates to a specific page of <cite><span class="house">House</span> of Leaves</cite> and that is of a form that can be shared on Instagram, Tumblr, Vine or Twitter. Post it in the appropriate place and tag it "hol14" and "p123" (replace 123 with the page you're making something for). That usually works!</p>

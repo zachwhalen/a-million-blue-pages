@@ -180,11 +180,19 @@ function locatePage (g, roms, nums){
 
 /* a helper, so I can refer to pages by name or raw order. */
 function getPageByName(name){
-	for (var p = 0; p <= 742; p++){ // note, this is hardcoded. Change 742 if pages change
-		if (thePages[p].name == name.toUpperCase()){
-			return thePages[p];
+	re = new RegExp(name, "i");
+
+	for (var p = 0; p <= 742; p++){ // note, this is hardcoded. Change 742 if thePages change
+	
+		if (typeof thePages[p].name != 'undefined'){
+			var nameSrgin = thePages[p].name + '';
+			if (nameSrgin.match(re)) {
+
+				return thePages[p];
+			}
 		}
 	}
+
 }
 
 
@@ -522,4 +530,20 @@ function romanize (num) {
     while (i--)
         roman = (key[+digits.pop() + (i * 10)] || "") + roman;
     return Array(+digits.join("") + 1).join("M") + roman;
+}
+
+function sanitizeTime(stamp){
+	// could be receiving times formatted in strings or in UNIX timestamps. The latter need to be converted to JS time (* 1000).
+
+	// a bit of regex to tell what we're dealing with
+
+	if (stamp.match(/^[0-9]{10}$/g)){
+		return stamp * 1000;	
+	}else{
+
+		return Date.parse(stamp);
+	}
+	
+
+
 }

@@ -500,7 +500,7 @@ font-family: 'Open Sans';
     font-size: 88%;
 
 }
-.card.tumblr {
+.card.tumblr, .lt-node.tumblr .lt-type-frame  {
     background-color: #2c4762;
     font-family: 'Open Sans', Helvetica, sans-serif;
     font-size: 9pt;
@@ -523,16 +523,16 @@ font-family: 'Open Sans';
     border-top: 1px dotted #555;
     clear: both;
 }
-.card.instagram {
+.card.instagram, .lt-node.instagram .lt-type-frame  {
 
     background-color: #3f729b;
 }
 
-.card.twitter {
+.card.twitter, .lt-node.twitter .lt-type-frame  {
     background-color: #0084b4;
 }
 
-.card.vine {
+.card.vine, .lt-node.vine .lt-type-frame  {
 background-color: #00bf8f;
 }
 .embed-tumblr-link a {
@@ -590,6 +590,8 @@ a.tumblr-text-link:hover{
 .pg-label a{
 	text-decoration: none;
 	color: #bbb;
+    border-bottom: 1px dotted #eb4646;
+    
 }	
 
 #tag-filters label {
@@ -661,5 +663,115 @@ body div.view {
 	height: 40px;
 }
 
+.lt-image {
+	overflow: hidden;
+	width: 180px;
+	height: 180px;
+    position:relative;
+}
+
+.lt-type-frame {
+	background-color: #2c4762;
+	padding: 12px;
+	float:left;
+	margin-right: 20px;
+}
+.lt-image img {
+	height: 200px;
+	width: auto;
+}
+
+.lt-node {
+	clear:left;
+	margin-bottom: 25px;
+
+}
+.lt-when {
+
+    font-style: italic;
+}
 
 
+
+.lt-node.text .lt-image, .lt-node.tweet .lt-image, .lt-node.quote .lt-image, .lt-node.link .lt-image {
+    height: 60px;
+
+}
+
+.lt-node .source-legend, .lt-node .type-legend {
+    width: 60px;
+    height: 60px;
+    background-color: #8844ff;
+    position: absolute;
+}
+
+.source-legend {
+    top:0;
+    left: 0;
+}
+
+.type-legend {
+    bottom:0;
+    right:0;
+
+}
+
+.lt-node.text .type-legend {
+    background: transparent url(img/ico-text.png) top left no-repeat;
+
+}
+
+.lt-node.photo .type-legend {
+
+    background: transparent url(img/ico-photo.png) top left no-repeat;
+}
+
+.lt-node.video .type-legend {
+    background: transparent url(img/ico-video.png) top left no-repeat;
+}
+.lt-node.video .type-link {
+    background: transparent url(img/ico-link.png) top left no-repeat;
+}
+.lt-node.tweet .type-legend {
+    background-image: none;
+    background-color: transparent;
+}
+
+.lt-node.twitter .source-legend {
+    background: transparent url(img/ico-twitter.png) top left no-repeat;
+}
+
+.lt-node.tumblr .source-legend {
+    background: transparent url(img/ico-tumblr.png) top left no-repeat;
+}
+.lt-node.vine .source-legend {
+    background: transparent url(img/ico-vine.png) top left no-repeat;
+}
+.lt-node.instagram .source-legend {
+    background: transparent url(img/ico-instagram.png) top left no-repeat;
+}
+
+div.lt-actions {
+    font-family: 'Open Sans';
+
+
+      font-weight: bold;
+    text-decoration: none;
+    margin: .5em 1em 0 0 ;
+  
+    
+}
+div.lt-actions a {
+    color: #bbb;
+    text-decoration: none;
+    padding: .2em .5em;
+    display: inline-block;
+    background-color: #333;
+    display: inline-block;
+    border-radius: .15em;
+}
+
+.lt-message {
+
+    font-size: 1.2em;
+}
