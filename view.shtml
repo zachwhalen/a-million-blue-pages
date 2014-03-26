@@ -151,12 +151,21 @@
 					
 				});
 		
+				$('#statistics').sheetrock({
+					url: 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dG9Ra19TOXB4QlRwUmJuM0w0NkhZQ3c#gid=0',
+					sql: 'select *', 
+					headersOff: true,
+					headers: 1,
+					rowHandler: showStats
+					
+					
+				});
 		
-		
-				// load statistics
-				$("#statistics").html("<span class='stat' id='total-nodes'>Tracking <strong class='house'>"+ totalNodes + "</strong> content nodes</span>\n" + 
-										"<span class='stat' id='pages-covered'> <strong class='house'>"+  "</strong> </span><br />");
-
+				function showStats(data){
+					console.log(data);
+					var statsHTML =  "<div class='showStats'><span class='stat'>" + data.cells.Actual + "</span> nodes covering <span class='stat'>" + data.cells.Pages + "</span> pages. <span class='stat'>" + data.cells.Empty + "</span> pages left.</div>";
+					return statsHTML;
+					}
 			}
 	});
 

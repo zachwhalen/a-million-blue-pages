@@ -1,44 +1,183 @@
 <html>
 <head>
 	<link rel="icon" type="image/ico" href="favicon.ico"/>
-	<title>A Million Blue Pages</title>
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800,700|Goudy+Bookletter+1911' rel='stylesheet' type='text/css'>
+	<title>Latest - A Million Blue Pages</title>
+<!--#include virtual="inc/head.html"-->
+<!-- this page should show the latest however-many posts on AMBP. 
+     reverse-chronologically.
+	 
+	 -->
+	 <script type="text/javascript">
+	 
+		offset = 0;
+		if (getURLParameter('o') != 'null'){
+			offset = getURLParameter('o');
+			
+		}
+		$(document).ready( function () {
+			template = Handlebars.compile($("#latest-template").html());
+			$('#null').sheetrock({
+					url: 'https://docs.google.com/spreadsheet/ccc?key=0AjzKgFlHsxs_dEhQVENrb1I2SllPa19ZSjVtMWtNVEE&usp=drive_web#gid=0',
+					sql: 'select A,B,C,D,F,G,H,I,K,L,N where P != "skip" order by N desc limit 30 offset ' + offset, 
+
+					headersOff: true,
+					rowHandler : latestRows,
+					userCallBack : keepDoingStuff
+			});
+			
+			if (offset * 1 - 30 >= 0){
+				$(".browse .previous").html("<a href='?o="+ (offset * 1 - 30) + "'>&laquo;  Previous 30</a>");
+			}
+			$(".browse .next").html("<a href='?o=" + (offset * 1 + 30) + "'>Next 30 &raquo;</a>");
+			
+			// add twitter widget, appropriately sized
+
 		
-		<script src="scripts/jquery.cookie.js"></script>
+			
+
+			
+		});
 		
-		<link rel="stylesheet" type="text/css" href="style.css" />
-	
+		function latestRows(data){
+			console.log(data);
+			var author = '';
+			var title = '';
+			if (data.cells.data){
+				apid = $.parseJSON(data.cells.data) ? $.parseJSON(data.cells.data) : '';
+				
+				if (data.cells.source == 'tumblr'){
+					author = apid.post_author ? apid.post_author : apid.blog_name;
+				}else{
+					author = data.cells.username;
+				}
+				title = apid.title ? apid.title : '';
+				
+					
+				
+			}else{
+				author = data.cells.username;
+			}
+			var sourceMsg = '';
+			if (data.cells.source == 'twitter'){
+				sourceMsg = '';
+				img = '';
+			}else{
+				sourceMsg = ' on ' + data.cells.source;	
+			}
+			
+			if (data.cells.type == 'video'){
+				img = data.cells.thumbnail;
+			}else{
+				img = data.cells.larger;
+			}
+			
+			var tags = data.cells.tags.replace(/hol14,/ig,'').replace(/,/g,', ');
+			var when = (data.cells.timestamp == "") ? data.cells.digested : data.cells.timestamp;
+			
+			var h = {
+				'type' : data.cells.type,
+				'source' : data.cells.source,
+				'img' : img,
+				'tags' : tags,
+				'author' : author,
+				'sourceMsg' : sourceMsg,
+				'typePre' : preType(data.cells.type),
+				'title' : title,
+				'link' : data.cells.link,
+				'page' : data.cells.page,
+				'when' : $.timeago(sanitizeTime(when))
+			};
+			
+			$("#latest").append(template(h));
+		}
+		
+		function preType (type){
+			if ($.inArray(type, ['text','audio']) > -1){
+				return '';
+			}
+			if(type == 'image'){
+				return ' an ';
+			}
+			return ' a '; 
+		}
+
+		function keepDoingStuff (){
+			
+		}
+	 </script>
 	
 </head>
 <body>
-<div class="wrapper home">
-	<h1>A Million Blue Pages</h1>
-	<p class="subtitle">A Collaboration in Visualizing the Networks of <cite><span class="house">House</span> of Leaves</cite></p>
+<div class="wrapper">
+<!--#include virtual="inc/header.html"-->
+<div id="content">
+<div id="most-recent-content">
+	<h2>Latest Content</h2>
+	<div id="top-browse" class="browse">
+	<span class="previous">&laquo; Previous 30</span> &nbsp;&nbsp;||&nbsp;&nbsp; <span class="next">Next 30 &raquo;</span>
+</div>
+<div id="latest">
 
-<nav>
-		<ul>
-			
-			<li><a href="/view.shtml">View</a></li>
-			<li><a href="/about.shtml">About</a></li>
-			<li><a href="/contribute.shtml">Contribute</a></li>
-			<li><a href="/teach.shtml">Teach</a></li>
-			<li><a href="/faq.shtml">FAQ</a></li>
-		</ul>
-	</nav>
-	<br/><br/><br/>
-<a class="twitter-timeline" width="500"  height="300" href="https://twitter.com/search?q=%23hol14" data-widget-id="441280878308622336">Tweets about "#hol14"</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+<div id="null">
 
+</div>
+<div id="browse" class="browse">
+	<span class="previous">&laquo; Previous 30</span> &nbsp;&nbsp;||&nbsp;&nbsp; <span class="next">Next 30 &raquo;</span>
+</div>
+</div>
+<div id="about-blurb">
+	<h2>About this Website</h2>
+<p><cite>A Million Blue Pages.net</cite> is a platform conceived and designed to support a collaborative teaching project around the book, <cite><span class="house">House</span> of Leaves</cite>. Taking inspiration from Zak Smith's illustrations for each page of <cite><a href="http://www.themodernword.com/pynchon/zak_smith/title.htm">Gravity's Rainbow</a></cite>, and bearing in mind the <a href="http://www.samplereality.com/2011/08/18/renetworking-the-novel/">distinctively networked textuality</a> of <cite><span class="house">House</span> of Leaves</cite>, this website invites users to <a href="contribute.shtml">contribute</a> images, video, audio, text -- anything that can be shared on the web -- to add to our growing <a href="view.shtml">collection of nodes</a>. </p>
 
-	
+<h2>News</h2>
+<div id="latest-news">
+<!--#include virtual="/cgi-bin/blosxom.cgi/?flav=lt" -->
 </div>
 
-<!--#include virtual="inc/footer.html" -->
+<h2>Recent Comments</h2>
+<div id="recentcomments" class="dsq-widget">
 
+<script type="text/javascript" src="http://amillionbluepages.disqus.com/recent_comments_widget.js?num_items=5&hide_avatars=0&avatar_size=32&excerpt_length=200&hide_mods=0"></script>
+</div>
+<h2>On Twitter</h2>
 
+<a class="twitter-timeline" style="width:100%" height="600" href="https://twitter.com/search?q=%23hol14" data-widget-id="441280878308622336">Tweets about "#hol14"</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
+</div>
+</div>
+<!--#include virtual="inc/footer.html"-->
+<script id="latest-template" type="text/x-handlebars-template">
 
+	<div class="lt-node {{type}} {{source}}">
+		<div class="lt-type-frame">
+		<div class="lt-image" style="background-image: url({{img}}); background-size: cover">
+			<div class="source-legend"> </div>
+			<div class="type-legend"> </div>
+
+		</div>	
+		</div>
+		<div class="lt-info">
+			<div class="lt-message">
+				{{author}} shared <span class="lt-type">{{typePre}}<a href="{{link}}">{{type}}</a></a>
+				{{#if title}}
+				, "{{title}},"
+				{{/if}}
+				 for <span class="lt-page"><a href="/page.shtml?page={{page}}">page {{page}}</a></span>{{sourceMsg}}.
+			</div>
+		    <div class="lt-when">
+		    	{{when}}
+		    </div>
+			<div class="lt-tags">
+				Tags: {{tags}}
+			</div>
+			<div class="lt-actions">
+				
+				<a href="/page.shtml?page={{page}}">Context</a>
+				<a href="{{link}}">Link</a>  
+			</div>	
+		</div>
+		<br style="clear:both" />
+	</div>
+</script>
 </body>
-</html>
-

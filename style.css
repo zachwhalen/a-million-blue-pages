@@ -394,7 +394,7 @@ span.counter {
 
 .wrapper #content {
 	margin: 0 auto;
-	width: 85%;
+	width: 92%;
 }
 
 .blog-img {
@@ -693,9 +693,8 @@ body div.view {
 
 
 
-.lt-node.text .lt-image, .lt-node.tweet .lt-image, .lt-node.quote .lt-image, .lt-node.link .lt-image {
+.lt-node.text .lt-image, .lt-node.tweet .lt-image, .lt-node.quote .lt-image, .lt-node.link .lt-image, .lt-node.audio .lt-image {
     height: 60px;
-
 }
 
 .lt-node .source-legend, .lt-node .type-legend {
@@ -721,7 +720,7 @@ body div.view {
 
 }
 
-.lt-node.photo .type-legend {
+.lt-node.photo .type-legend, .lt-node.image .type-legend {
 
     background: transparent url(img/ico-photo.png) top left no-repeat;
 }
@@ -729,8 +728,12 @@ body div.view {
 .lt-node.video .type-legend {
     background: transparent url(img/ico-video.png) top left no-repeat;
 }
-.lt-node.video .type-link {
+.lt-node.link .type-legend {
     background: transparent url(img/ico-link.png) top left no-repeat;
+}
+
+.lt-node.audio .type-legend {
+    background: transparent url(img/ico-audio.png) top left no-repeat;
 }
 .lt-node.tweet .type-legend {
     background-image: none;
@@ -772,6 +775,95 @@ div.lt-actions a {
 }
 
 .lt-message {
+    font-family: 'Open Sans';
+    font-weight: bold;    /*font-size: 1.2em;*/
+}
 
-    font-size: 1.2em;
+.lt-info {
+    margin-left: 225px;
+    }
+
+h1 a {
+    text-decoration: none;
+    color: #bbb;
+
+}
+
+h1 a:hover {
+    color: #fff;
+
+}
+
+
+/* new homepage layout */
+
+#most-recent-content {
+    width: 60%;
+    float: left;
+}
+
+#about-blurb {
+    float: left;
+    width: 30%;
+    margin-left: 8%;
+}
+
+#news {
+
+}
+
+.showStats .stat {
+	font-weight: bold;
+}
+#recentcomments {
+	font-size: 85%;
+}
+#recentcomments a.dsq-widget-user, .dsq-widget-meta a {
+	-webkit-font-smoothing: antialiased;
+	font-family: sans-serif;
+
+	text-decoration: none;
+}
+li.dsq-widget-item {
+
+    padding-left: 40px;
+}
+li.dsq-widget-item img {
+	display: block;
+	
+	float: left;
+	margin: 4px;
+    margin-left:-40px;
+	}
+html body p.dsq-widget-meta {
+
+}
+
+
+#latest-news h2 {
+    font-size: 90%;
+    margin:0;
+    padding:0;
+}   
+
+#latest-news h4{
+    margin: 0;
+    padding: 0;
+    margin-bottom: .8em;
+
+}
+#latest-news a {
+    font-family: 'Open Sans';
+    text-decoration: none;
+}
+div.lt-foot {
+
+    text-align:right;
+    font-size: 80%;
+}
+
+#top-browse {
+text-align:right;
+margin-top: -2.5em;
+margin-bottom:1.5em;
 }
